@@ -1,12 +1,14 @@
-# Angular Latest topics
+# Angular Latest Topics
 
-We are using angular 16
+## Version
 
-## Topics
+angular 16
 
-Changes Detection
-View Encapsulation
-Signals
-Gaurds
-Routing
-StandAlone
+## Features
+
+- View Encapsultion
+- ng-deep, host, host-context
+- Signals
+- Gaurds
+- StandAlone Component
+- Ng template outlet
