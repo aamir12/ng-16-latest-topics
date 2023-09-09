@@ -1,1 +1,13 @@
-<p>angular-css works!</p>
+<ul>
+    <li>
+        <a [routerLink]="['ng-deep']">NG Deep</a>
+    </li>
+    <li>
+        <a [routerLink]="['host-context']">Host Context</a>
+    </li>
+    <li>
+        <a [routerLink]="['other-page']">Other page</a>
+    </li>
+</ul>
+
+<router-outlet></router-outlet>

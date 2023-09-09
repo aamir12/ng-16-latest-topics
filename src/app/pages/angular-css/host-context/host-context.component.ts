@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { MaterialModule } from 'src/app/core/modules/material.module';
 
 @Component({
-  selector: 'app-ng-template-outlet',
-  templateUrl: './ng-template-outlet.component.html',
-  styleUrls: ['./ng-template-outlet.component.scss'],
+  selector: 'app-host-context',
   standalone: true,
   imports: [CommonModule,MaterialModule],
+  templateUrl: './host-context.component.html',
+  styleUrls: ['./host-context.component.scss']
 })
-export class NgTemplateOutletComponent {
+export class HostContextComponent {
 
 }
