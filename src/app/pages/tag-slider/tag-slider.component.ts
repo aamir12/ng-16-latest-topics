@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/core/modules/material.module';
-import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, Output, EventEmitter, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, Output, EventEmitter, Input, ViewChildren, QueryList, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-tag-signals',
@@ -16,9 +16,12 @@ export class TagSliderComponent implements AfterViewInit {
   showLeftArrow = false;
   showRightArrow = false;
 
+  dragging = false;
+  isDragging = false;
   @Input('tags') tags:string[] = [];
   @Output('onSelect') onSelect = new EventEmitter<string>();
   
+  constructor(private el: ElementRef) { }
 
   activeTabIndex: number = 0;
 
@@ -81,6 +84,26 @@ export class TagSliderComponent implements AfterViewInit {
       this.showRightArrow = true;
     }
   }
+
+  onMousemove(event:MouseEvent){
+    if (!this.dragging) return;
+    this.isDragging = true;
+    this.tabsList.nativeElement.scrollLeft -= event.movementX;
+  };
+
+  onMousedown(event:MouseEvent) {
+    this.dragging = true;
+  }
+
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(event: MouseEvent) {
+    if (this.el.nativeElement.contains(event.target)) {
+      this.dragging = false;
+      this.isDragging = false;
+    }
+  }
+
 
 }
 

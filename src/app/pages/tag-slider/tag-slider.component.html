@@ -7,7 +7,7 @@
           </svg>
     </div>
   
-    <ul #tabsList (scroll)="manageIcons()">
+    <ul #tabsList (scroll)="manageIcons()" (mousemove)="onMousemove($event)" (mousedown)="onMousedown($event)"  [class.dragging]="isDragging">
       <li *ngFor="let tag of tags; let i = index" #tagElement>
         <a href="javascript:void(0)" [class.active]="i === activeTabIndex" (click)="selectTab(i,tag)">{{ tag }}</a>
       </li>
