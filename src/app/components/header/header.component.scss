@@ -16,3 +16,16 @@
     justify-content: center;
 }
 
+.app-sidenav .dropdown {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.app-sidenav .dropdown .mat-expansion-panel-header {
+    padding-left:0px ;
+    padding-right:16px ;
+}
+
+.app-container .dropdown .mat-icon {
+    padding-right: 10px;
+}

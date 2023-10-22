@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-12">
+
+        <div appClickOutside (appClickOutside)="closeDropdown()">
+            <button (click)="toggleDropdown()">Toggle Dropdown</button>
+            <div *ngIf="dropdownOpen" class="dropdown border p-5">
+              Dropdown content
+            </div>
+        </div>
+
+        <br>
+
+        <div appEllipsis class="ellipsis">
+            This is a long text that will be truncated with an ellipsis if it overflows its container.
+        </div>
+
+        <div appDraggable>
+            Drag me around!
+          </div>
+        <div style="width: 100%;height: 10000px;">
+        </div>
+        <img src="assets/lazy-image-small.jpg" style="width: 100%;height: auto;" data-src="assets/lazy-image.jpg" alt="Lazy-loaded image" appLazyLoad />
+    </div>
+</div>

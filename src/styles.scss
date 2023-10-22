@@ -12,3 +12,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .container {
     padding: 50px 80px;
 }
+
+.app-sidenav .dropdown .mat-expansion-panel-header .mat-content {
+    align-items: center !important;
+}
+
+.app-sidenav .dropdown .mat-expansion-panel-body {
+    padding: 0px;
+}
+
+.app-sidenav .dropdown .mat-mdc-list-item {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.app-sidenav .dropdown .mat-expansion-panel-header.mat-expanded {
+    height: 40px;
+}

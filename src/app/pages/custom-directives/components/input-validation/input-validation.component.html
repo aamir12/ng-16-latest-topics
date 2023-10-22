@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">Directives</div>
+            <div class="card-body p-5">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge bg-primary">Password Regex</span>
+                    <span class="badge bg-secondary">Matcher</span>
+                    <span class="badge bg-success">Auto Focus</span>
+                </div>
+
+                <form #userForm="ngForm" (ngSubmit)="onFormSubmit()" [appMatchPassword]="['password', 'confirmPassword']">
+                    <div class="mb-3">
+                      <label for="passwordInput" class="form-label">Password</label>
+                      <input type="password" name="password" appAutofocus [(ngModel)]="user.password" #password="ngModel"
+                      appPasswordValidator="[A-Za-z]+[0-9]+" required class="form-control" id="passwordInput">
+                      <div *ngIf="password.invalid && ( isSubmit || password.touched)" class="text-danger">
+                        <ng-container *ngIf="password.hasError('required')">Password is required.</ng-container>
+                        <ng-container *ngIf="password.hasError('passwordPattern')">Password must contain letters and numbers.</ng-container>
+                      </div>
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="cpasswordInput" class="form-label">Confirm Password</label>
+                        <input type="password" name="confirmPassword" [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel"
+                         required class="form-control" id="cpasswordInput">
+                        <div *ngIf="confirmPassword.invalid && ( isSubmit || confirmPassword.touched)" class="text-danger">
+                          <ng-container *ngIf="confirmPassword.hasError('required')">Confirm password is required.</ng-container>
+                          <ng-container *ngIf="confirmPassword.hasError('notMatching')">Password not match</ng-container>
+                        </div>
+                      </div>
+    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+
+                  <br>
+                  <h3>Input Mask</h3>
+                  <input type="text" [appInputMask]="'(999) 999-9999'">
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -32,9 +32,15 @@ const routes: Routes = [
     loadComponent: () => import('./pages/signals/signals.component').then(mod => mod.SignalsComponent)
   },
   {
-    path: 'tag-slider',
-    loadComponent: () => import('./pages/tag-slider/tag-slider.component').then(mod => mod.TagSliderComponent)
+    path: 'custom-directives',
+    loadComponent: () => import('./pages/custom-directives/custom-directives.component').then(mod => mod.CustomDirectivesComponent),
+    loadChildren: () =>
+      import('./pages/custom-directives/directive-routing').then(
+        (mod) => mod.CUSTOM_DIRECTIVES_ROUTES
+      ),
+
   },
+  
 ];
 
 @NgModule({
