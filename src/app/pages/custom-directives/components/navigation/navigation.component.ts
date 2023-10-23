@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { DataService, Post } from '../../data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -14,6 +14,8 @@ export class NavigationComponent {
   http = inject(DataService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  location = inject(Location);
+
   posts$ = this.http.getPosts();
 
   openPost(post:Post) {
@@ -22,5 +24,9 @@ export class NavigationComponent {
         postDetail:post
       }
     })
+  }
+
+  onBack() {
+    this.location.back();
   }
 }

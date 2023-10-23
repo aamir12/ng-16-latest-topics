@@ -1,4 +1,7 @@
 <div class="row">
+    <div class="col-12 d-flex justify-content-end align-item-center mb-3">
+        <button type="button" (click)="onBack()" class="btn btn-primary">Back</button>
+    </div>
     <div class="col-12">
         <ul class="list-group list-group-flush" *ngIf="posts$ | async as posts">
             <li class="list-group-item" (click)="openPost(post)" *ngFor="let post of posts">
