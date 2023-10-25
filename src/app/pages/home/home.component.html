@@ -1,3 +1,7 @@
 <div class="container">
-    
+    <app-ng-template-outlet [headerTemplate]="headerTemplate"></app-ng-template-outlet>
+    <ng-template #headerTemplate>
+        <h3 class="card-title my-0">Ng Template Outlet</h3>
+        <h5 class="card-subtitle mb-0">This is input header from home</h5>
+    </ng-template>
 </div>

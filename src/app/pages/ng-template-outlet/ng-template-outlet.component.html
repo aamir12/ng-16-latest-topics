@@ -1,1 +1,30 @@
-<p>ng-template-outlet works!</p>
+<div class="my-5 d-flex justify-content-center align-item-center">
+    <div class="card w-25">
+        <div class="card-header">
+            <!-- Approch 1 -->
+            <!-- imperative approach (not good approch) -->
+            <!-- <ng-container #container></ng-container>
+            <ng-template #defaultHeaderTemplate>
+                <h4 class="card-title mb-0">Weather Forecast</h4>
+                <h3 class="card-subtitle text-muted my-0">Current weather in your location</h3>
+            </ng-template> -->
+            <!-- Approch 2 -->
+            <ng-container [ngTemplateOutlet]="headerTemplate || defaultHeaderTemplate"></ng-container>
+
+            <ng-template #defaultHeaderTemplate>
+                <h4 class="card-title mb-0">Weather Forecast</h4>
+                <h3 class="card-subtitle text-muted my-0">Current weather in your location</h3>
+            </ng-template>
+            
+        </div>
+        <div class="card-body fs-3 text-center d-flex flex-column gap-3">
+            <div class="sky-condition">{{ state.data.skyCondition === 'sunny' ? '☀️' : '☁️' }}</div>
+            <div class="temperature">{{state.data.temperature}}°C</div>
+        </div>
+        <div class="card-footer d-flex gap-2 justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="actions.reload()">Reload</button>
+            <button type="button" class="btn btn-warning" (click)="actions.copyData()">Copy Info</button>
+        </div>
+    </div>
+</div>
+
