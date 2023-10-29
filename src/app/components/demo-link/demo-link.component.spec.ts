@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OtherPageComponent } from './other-page.component';
+import { DemoLinkComponent } from './demo-link.component';
 
-describe('OtherPageComponent', () => {
-  let component: OtherPageComponent;
-  let fixture: ComponentFixture<OtherPageComponent>;
+describe('DemoLinkComponent', () => {
+  let component: DemoLinkComponent;
+  let fixture: ComponentFixture<DemoLinkComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [OtherPageComponent]
+      imports: [DemoLinkComponent]
     });
-    fixture = TestBed.createComponent(OtherPageComponent);
+    fixture = TestBed.createComponent(DemoLinkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

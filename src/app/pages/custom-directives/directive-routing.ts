@@ -3,6 +3,7 @@ import { InputValidationComponent } from "./components/input-validation/input-va
 import { LazyImageComponent } from "./components/lazy-image/lazy-image.component";
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { SinglePostComponent } from "./components/single-post/single-post.component";
+import { NestedChildComponent } from "./components/single-post/nested-child/nested-child.component";
 export const CUSTOM_DIRECTIVES_ROUTES: Route[] = [
     {
         path:'',
@@ -18,11 +19,18 @@ export const CUSTOM_DIRECTIVES_ROUTES: Route[] = [
     },
     {
         path:'navigation',
-        component:NavigationComponent
+        component:NavigationComponent,
+
     },
     {
         path:'single-post',
-        component:SinglePostComponent
+        component:SinglePostComponent,
+        children:[
+            {
+                path:':postId',
+                component:NestedChildComponent
+            }
+        ]
     },
     // {
     //     path:'lazy-load-images',

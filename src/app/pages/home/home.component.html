@@ -1,7 +1,19 @@
 <div class="container">
-    <app-ng-template-outlet [headerTemplate]="headerTemplate"></app-ng-template-outlet>
+    <app-ng-template-outlet 
+        [headerTemplate]="headerTemplate"
+        [contentTemplate]="altContentTemplate"
+        [actionTemplate]="altAction"></app-ng-template-outlet>
     <ng-template #headerTemplate>
         <h3 class="card-title my-0">Ng Template Outlet</h3>
         <h5 class="card-subtitle mb-0">This is input header from home</h5>
+    </ng-template>
+
+    <ng-template #altContentTemplate let-state="state">
+        <div class="sky-condition">{{ state.data.skyCondition === 'sunny' ? '☀️' : '☁️' }}</div>
+        <div class="temperature">{{state.data.temperature}}°C</div>
+    </ng-template>
+
+    <ng-template #altAction>
+        <app-weather-custom-action></app-weather-custom-action>
     </ng-template>
 </div>

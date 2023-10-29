@@ -22,7 +22,13 @@ export class NavigationComponent {
     this.router.navigate(['/custom-directives/single-post'],{
       state:{
         postDetail:post
-      }
+      },
+    })
+  }
+
+  customNavigate(id:number) {
+    this.router.navigate(['/custom-directives/single-post',id],{
+      queryParams:{mode:'create'},
     })
   }
 

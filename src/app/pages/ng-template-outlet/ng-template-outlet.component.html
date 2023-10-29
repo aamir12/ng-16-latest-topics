@@ -18,12 +18,29 @@
             
         </div>
         <div class="card-body fs-3 text-center d-flex flex-column gap-3">
-            <div class="sky-condition">{{ state.data.skyCondition === 'sunny' ? '☀️' : '☁️' }}</div>
-            <div class="temperature">{{state.data.temperature}}°C</div>
+            <!-- ngTemplateOutletContext: passing value to contentTemplate -->
+            <ng-container 
+            [ngTemplateOutlet]="contentTemplate || defaultContentTemplate"
+            [ngTemplateOutletContext]="{ state: state }">
+            </ng-container>
+
+            <ng-template #defaultContentTemplate>
+                <div class="sky-condition">{{ state.data.skyCondition === 'sunny' ? '☀️' : '☁️' }}</div>
+               <div class="temperature">{{state.data.temperature}}°C</div>
+            </ng-template>
+            
         </div>
         <div class="card-footer d-flex gap-2 justify-content-end">
-            <button type="button" class="btn btn-primary" (click)="actions.reload()">Reload</button>
-            <button type="button" class="btn btn-warning" (click)="actions.copyData()">Copy Info</button>
+            <ng-container
+                [ngTemplateOutlet]="actionTemplate || defaultWidgetAction"
+                [ngTemplateOutletInjector]="injector">
+            </ng-container>
+
+            <ng-template #defaultWidgetAction>
+                <button type="button" class="btn btn-primary" (click)="actions.reload()">Reload</button>
+                <button type="button" class="btn btn-warning" (click)="actions.copyData()">Copy Info</button>
+            </ng-template>
+           
         </div>
     </div>
 </div>

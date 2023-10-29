@@ -7,17 +7,9 @@ const routes: Routes = [
     loadComponent: () => import('./pages/home/home.component').then(mod => mod.HomeComponent)
   },
   {
-    path: 'view-encapsulation',
-    loadComponent: () => import('./pages/view-encapsulation/view-encapsulation.component').then(mod => mod.ViewEncapsulationComponent)
-  },
-  {
     path: 'angular-css',
     loadComponent: () => import('./pages/angular-css/angular-css.component').then(mod => mod.AngularCssComponent),
-    loadChildren: () =>
-      import('./pages/angular-css/angular-routing').then(
-        (mod) => mod.ANGULAR_CSS_ROUTES
-      ),
-
+    
   },
   {
     path: 'gaurds',

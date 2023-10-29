@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule,Location } from '@angular/common';
 import { Post } from '../../data.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-single-post',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './single-post.component.html',
   styleUrls: ['./single-post.component.scss']
 })

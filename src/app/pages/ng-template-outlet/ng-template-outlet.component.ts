@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, AfterViewInit, Component, Input, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, Injector, Input, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { MaterialModule } from 'src/app/core/modules/material.module';
 import { WidgetActions } from './widget-actions.service';
 import { WidgetState } from './widget-state.service';
@@ -13,9 +13,7 @@ import { WidgetState } from './widget-state.service';
   providers:[WidgetActions,WidgetState]
 })
 export class NgTemplateOutletComponent implements AfterViewInit {
-  state = inject(WidgetState);
-  actions = inject(WidgetActions);
-
+  
   //Approch 1
   //this is imperative approch: we need to define each and every step
   // @ViewChild('container',{read:ViewContainerRef}) container!: ViewContainerRef;
@@ -27,6 +25,14 @@ export class NgTemplateOutletComponent implements AfterViewInit {
 
   //Approch 2 Declrative
   @Input() headerTemplate!: TemplateRef<any>;
+  @Input() contentTemplate!: TemplateRef<{state:WidgetState}>;
+  @Input()
+  actionTemplate!: TemplateRef<any>;
+
+  state = inject(WidgetState);
+  actions = inject(WidgetActions);
+  injector = inject(Injector);
+
   ngAfterViewInit(): void {
     
   }
