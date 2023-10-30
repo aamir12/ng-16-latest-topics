@@ -32,6 +32,14 @@ const routes: Routes = [
       ),
 
   },
+  {
+    path: 'pipes',
+    loadComponent: () => import('./pages/pipes/pipes.component').then(mod => mod.PipesComponent)
+  },
+  {
+    path: 'inline-edit-able-mat-table',
+    loadComponent: () => import('./pages/edit-eable-mat-table/edit-eable-mat-table.component').then(mod => mod.EditEableMatTableComponent)
+  },
   
 ];
 

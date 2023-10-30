@@ -22,6 +22,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatSortModule} from '@angular/material/sort';
+import { MatTableModule} from '@angular/material/table';
+
 
 
 @NgModule({
@@ -53,6 +57,9 @@ import { MatMenuModule } from '@angular/material/menu';
     MatFormFieldModule,
     MatToolbarModule,
     MatMenuModule,
+    MatTableModule,
+    MatSortModule, 
+    MatPaginatorModule
   ]
 })
 export class MaterialModule { }

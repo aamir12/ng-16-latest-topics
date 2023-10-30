@@ -1,0 +1,59 @@
+
+<div class="container">
+    <div class="row gap-4">
+        <div class="col-12">
+            <app-card title="Upper Case">
+                <p>{{ 'hello world' | uppercaseFirst }}</p>
+            </app-card>
+        </div>
+        <div class="col-12">
+            <app-card title="Reverse String">
+                <p>Angular</p>
+                <p>{{ 'Angular' | reverseString }}</p>
+            </app-card>
+        </div>
+
+        <div class="col-12">
+            <app-card title="Filter Array">
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <button type="button" (click)="filterCategory=''" class="btn btn-outline-primary" [class.active]="filterCategory===''">All</button>
+                    <button type="button" (click)="filterCategory='men'" class="btn btn-outline-primary" [class.active]="filterCategory==='men'">Men</button>
+                    <button type="button" (click)="filterCategory='women'" class="btn btn-outline-primary" [class.active]="filterCategory==='women'">Women</button>
+                    <button type="button" (click)="filterCategory='kid'" class="btn btn-outline-primary" [class.active]="filterCategory==='kid'">Kid</button>
+                </div>
+                <ul class="list-group my-3">
+                    <li class="list-group-item" *ngFor="let product of products | filterArray:'category':filterCategory">{{ product.name }}</li>  
+                </ul>
+            </app-card>
+        </div>
+
+        <div class="col-12">
+            <app-card title="Time Ago">
+                <p>{{ someTimestamp | timeAgo }}</p>
+            </app-card>
+        </div>
+        <div class="col-12">
+            <app-card title="Mask Input">
+                <p>{{maskInputText | maskedInput :'(***) ***-****'}}</p>
+            </app-card>
+        </div>
+
+        <div class="col-12">
+            <app-card title="Relative Ago">
+                <p>{{ currentTimestamp | relativeTime }}</p>
+            </app-card>
+        </div>
+
+        <div class="col-12">
+            <app-card title="Ordinal Number">
+                <p>{{ 1 | ordinalNumber }}</p>
+
+                <p>{{ 22 | ordinalNumber }}</p>
+
+                <p>{{ 13 | ordinalNumber }}</p>
+
+                <p>{{ 7 | ordinalNumber }}</p>
+            </app-card>
+        </div>
+    </div>
+</div>

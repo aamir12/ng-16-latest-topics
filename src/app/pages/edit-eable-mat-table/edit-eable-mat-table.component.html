@@ -1,0 +1,71 @@
+<div class="container">
+    <form>
+
+    
+    <div class="row">
+        <div class="col-12">
+               <div class="d-flex my-3 gap-2">
+                    <button type="button" class="btn btn-primary btn-sm" (click)="toggleMode()"> {{isEditMode ?'Edit':'View'}} Mode </button>
+                    <div *ngIf="isEditMode">
+                        <button type="button"  class="btn btn-primary btn-sm" (click)="addRow(numberOfRow)"> Add </button>
+                    <input type="number" name="numberOfRow" [(ngModel)]="numberOfRow" >
+                    </div>
+                    
+               </div>
+              
+              <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema; index as colIndex">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="col.key === 'Actions' || isEditMode">
+                            {{ col.label }}
+                        </th>
+                        <td mat-cell *matCellDef="let row; let rowIndex = index">
+                            <ng-container *ngIf="!isEditMode">
+                                <ng-container *ngIf="col.key !== 'Actions'">
+                                    <ng-container *ngIf="col.type === 'text'">
+                                        {{ row[col.key] }}
+                                    </ng-container>
+
+                                    <ng-container *ngIf="col.type === 'number'">
+                                        {{row[col.key] | currency : "USD" : "symbol"}}
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+
+                            <ng-container *ngIf="isEditMode">
+                                <ng-container *ngIf="col.key !== 'Actions'">
+
+                                    <input *ngIf="col.type === 'text'" type="text" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" [name]="'editingField_' + rowIndex + '_' + colIndex"  [(ngModel)]="row[col.key]" />
+
+                                    <input  *ngIf="col.type === 'number'" type="text" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" [name]="'editingField_' + rowIndex + '_' + colIndex" [(ngModel)]="row[col.key]"  currencyMask
+                                                    [options]="{ align: 'center', allowNegative: false }" [min]="0"  />
+
+                                </ng-container>
+
+                                <ng-container *ngIf="col.key === 'Actions'">
+                                    <button type="button" (click)="deleteRow(row)" class="btn btn-primary btn-sm">Delete</button>
+                                </ng-container>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+
+                                   
+              
+                  
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              
+                  
+                </table>
+              
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+              </div>
+              
+        </div>
+    </div>
+
+    <button class="btn btn-primary" (click)="onSave()">Save</button>
+    </form>
+</div>
+
+  

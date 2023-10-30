@@ -29,3 +29,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .app-sidenav .dropdown .mat-expansion-panel-header.mat-expanded {
     height: 40px;
 }
+
+.mat-sort-header-disabled .mat-sort-header-arrow {
+    display: none !important;
+}
