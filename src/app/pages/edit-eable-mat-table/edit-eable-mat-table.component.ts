@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { MaterialModule } from 'src/app/core/modules/material.module';
 import { UtilityService } from 'src/app/core/utility.service';
@@ -58,6 +58,7 @@ const NAMES: string[] = [
   imports:[CommonModule,MaterialModule,FormsModule,CurrencyMaskModule,AutoFocDirective]
 })
 export class EditEableMatTableComponent implements AfterViewInit{
+  @ViewChild('table') table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = ['Actions','id', 'name', 'progress', 'fruit','score'];
@@ -65,6 +66,7 @@ export class EditEableMatTableComponent implements AfterViewInit{
   dataSource!: MatTableDataSource<any>;
   utilityService = inject(UtilityService);
   isEditMode = false;
+  showTable = true;
   columnsSchema = [
     {
       key: 'Actions',
@@ -113,17 +115,15 @@ export class EditEableMatTableComponent implements AfterViewInit{
   
 
   ngAfterViewInit() {
-    
-    this.updateTable();
+    setTimeout(() => {
+      this.updateTable();
+    },0)
   }
 
   updateTable() {
-    setTimeout(() => {
       this.dataSource = new MatTableDataSource(this.matTableList);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    },0)
-    
   }
 
   toggleMode() {
@@ -138,21 +138,28 @@ export class EditEableMatTableComponent implements AfterViewInit{
 
   addRow(numberOfAllocations:string) {
     const numberOfRow = +numberOfAllocations;
-    if (+numberOfRow <= 0) {
+    if (numberOfRow <= 0) {
       return;
     }
     
-    for (let j = 1; j <= +numberOfRow; j++) {
+    this.showTable = false;
+    for (let j = 1; j <= numberOfRow; j++) {
       const record: any = this.getEmptyRecord();
       record.id = this.utilityService.generateUniqueId();
-      this.matTableList = [record,...this.matTableList]
+      this.matTableList = [record,...this.matTableList];
     }
-    
 
+    // this.dataSource.data = [...this.matTableList];
     this.updateTable();
     setTimeout(() => {
+      this.showTable = true;
       this.paginator.firstPage();
     }, 500);
+  }
+
+  showTableData() {
+    console.log(this.dataSource.data);
+    console.log(this.matTableList);
   }
 
   getEmptyRecord() {
@@ -176,6 +183,21 @@ export class EditEableMatTableComponent implements AfterViewInit{
       //delete from db
     }
 
+  }
+
+  removeAt(index: number,row:any) {
+    // const deleteItem = confirm("Deseja excluir esse item?");
+    // if (deleteItem) {
+    //   this.matTableList = this.matTableList.filter(r => r.id !== row.id);
+    //   const data = this.dataSource.data;
+    //   data.splice(
+    //     this.paginator.pageIndex * this.paginator.pageSize + index,
+    //     1
+    //   );
+    //   this.dataSource.data = data;
+    // }
+    this.matTableList = this.matTableList.filter(r => r.id !== row.id);
+    this.updateTable();
   }
 
   // applyFilter(event: Event) {
