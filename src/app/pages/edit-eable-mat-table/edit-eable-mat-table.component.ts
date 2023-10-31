@@ -117,12 +117,6 @@ export class EditEableMatTableComponent{
 
   
 
-  // ngAfterViewInit() {
-  //   setTimeout(() => {
-  //     this.updateTable();
-  //   },0)
-  // }
-
   updateTable() {
       this.dataSource = new MatTableDataSource(this.matTableList);
       this.dataSource.paginator = this.paginator;
