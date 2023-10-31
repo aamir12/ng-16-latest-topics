@@ -57,7 +57,7 @@ const NAMES: string[] = [
   styleUrls: ['./edit-eable-mat-table.component.scss'],
   imports:[CommonModule,MaterialModule,FormsModule,CurrencyMaskModule,AutoFocDirective]
 })
-export class EditEableMatTableComponent implements AfterViewInit{
+export class EditEableMatTableComponent{
   @ViewChild('table') table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -108,17 +108,20 @@ export class EditEableMatTableComponent implements AfterViewInit{
 
   numberOfRow = '';
   constructor() {
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-    this.matTableList = users;
+    const users = Array.from({length: 15}, (_, k) => createNewUser(k + 1));
+    setTimeout(() => {
+      this.matTableList = users;
+      this.updateTable();
+    },1000)
   }
 
   
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.updateTable();
-    },0)
-  }
+  // ngAfterViewInit() {
+  //   setTimeout(() => {
+  //     this.updateTable();
+  //   },0)
+  // }
 
   updateTable() {
       this.dataSource = new MatTableDataSource(this.matTableList);
