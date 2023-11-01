@@ -7,7 +7,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { MaterialModule } from 'src/app/core/modules/material.module';
 import { UtilityService } from 'src/app/core/utility.service';
 import { AutoFocDirective } from '../custom-directives/directives/autofoc.directive';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 export interface UserData {
   id: string;
@@ -58,15 +58,15 @@ const NAMES: string[] = [
   imports:[CommonModule,MaterialModule,FormsModule,CurrencyMaskModule,AutoFocDirective]
 })
 export class EditEableMatTableComponent{
-  @ViewChild('table') table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  displayedColumns: string[] = ['Actions','id', 'name', 'progress', 'fruit','score'];
+  displayedColumns: string[] = ['Actions','title', 'description', 'totalValue'];
   matTableList:any[] = [];
   dataSource!: MatTableDataSource<any>;
   utilityService = inject(UtilityService);
   isEditMode = false;
   showTable = true;
+  isSubmit = false;
   columnsSchema = [
     {
       key: 'Actions',
@@ -74,43 +74,29 @@ export class EditEableMatTableComponent{
       label: 'Actions',
     },
     {
-      key: 'id',
-      type: 'number',
-      label: 'ID',
-      isEditAbleField:false
+      key: 'title',
+      type: 'alphaNumeric',
+      label: 'CLIN #',
+      required:true,
     },
     {
-      key: 'name',
+      key: 'description',
       type: 'text',
-      label: 'Name',
-      isEditAbleField:true
+      label: 'Description',
+      required:false,
     },
     {
-      key: 'progress',
+      key: 'totalValue',
       type: 'number',
-      label: 'Progress',
-      isEditAbleField:true
+      label: 'Total Dollar Amount',
+      required:true,
     },
-    {
-      key: 'fruit',
-      type: 'text',
-      label: 'Fruit',
-      isEditAbleField:true
-    },
-    {
-      key: 'score',
-      type: 'number',
-      label: 'Score',
-      isEditAbleField:true
-    },
-
   ]
 
   numberOfRow = '';
   constructor() {
-    const users = Array.from({length: 15}, (_, k) => createNewUser(k + 1));
     setTimeout(() => {
-      this.matTableList = users;
+      this.matTableList = [];
       this.updateTable();
     },1000)
   }
@@ -142,11 +128,9 @@ export class EditEableMatTableComponent{
     this.showTable = false;
     for (let j = 1; j <= numberOfRow; j++) {
       const record: any = this.getEmptyRecord();
-      record.id = this.utilityService.generateUniqueId();
       this.matTableList = [record,...this.matTableList];
     }
 
-    // this.dataSource.data = [...this.matTableList];
     this.updateTable();
     setTimeout(() => {
       this.showTable = true;
@@ -159,42 +143,31 @@ export class EditEableMatTableComponent{
     console.log(this.matTableList);
   }
 
-  getEmptyRecord() {
+  getEmptyRecord(obj?:any) {
     return {
-      id: '',
-      name: '',
-      progress: '',
-      fruit: '',
-      score:''
+      ID: -1,
+      title: '',
+      description: '',
+      totalValue: '',
     }
   }
 
-  onSave() {
+  onSubmit(form:NgForm) {
+    this.isSubmit = true;
     console.log(this.matTableList);
   }
 
-  deleteRow(row:any) {
-    if(row.id.startsWith('custom')) {
+  
 
-    }else {
-      //delete from db
-    }
-
+  deleteRow(index: number) {
+    this.matTableList = this.matTableList.filter((ind,_) => ind !== index);
+    this.updateTable();
   }
 
-  removeAt(index: number,row:any) {
-    // const deleteItem = confirm("Deseja excluir esse item?");
-    // if (deleteItem) {
-    //   this.matTableList = this.matTableList.filter(r => r.id !== row.id);
-    //   const data = this.dataSource.data;
-    //   data.splice(
-    //     this.paginator.pageIndex * this.paginator.pageSize + index,
-    //     1
-    //   );
-    //   this.dataSource.data = data;
-    // }
-    this.matTableList = this.matTableList.filter(r => r.id !== row.id);
-    this.updateTable();
+  showError(input:any,message:string) {
+    if(input?.errors?.pattern) {
+      alert(message)
+    }
   }
 
   // applyFilter(event: Event) {
@@ -207,19 +180,3 @@ export class EditEableMatTableComponent{
   // }
 }
 
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
-    score:Math.round(Math.random() * 100)
-  };
-}
