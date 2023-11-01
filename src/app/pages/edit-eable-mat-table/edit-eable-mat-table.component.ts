@@ -152,12 +152,33 @@ export class EditEableMatTableComponent{
     }
   }
 
-  onSubmit(form:NgForm) {
-    this.isSubmit = true;
-    console.log(this.matTableList);
+  hasDuplicateTitles() {
+    const titleSet = new Set();
+    let isDuplicate = false;
+    for (const item of this.matTableList) {
+      const title = item.title.trim().toLowerCase();
+      if (titleSet.has(title)) {
+        item.hasError = true;
+        isDuplicate = true;
+      }
+      titleSet.add(title);
+    }
+    return isDuplicate;
   }
 
-  
+  onSubmit(form:NgForm) {
+    this.isSubmit = true;
+
+    if(form.invalid) {
+      alert("Please enter all required and valid values")
+      return;
+    }
+    if(this.hasDuplicateTitles()) {
+      alert("Duplicate Clin Id is not allowed");
+      return;
+    }
+    console.log(this.matTableList);
+  }
 
   deleteRow(index: number) {
     this.matTableList = this.matTableList.filter((ind,_) => ind !== index);

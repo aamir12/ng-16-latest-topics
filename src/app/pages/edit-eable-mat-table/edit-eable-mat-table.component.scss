@@ -15,3 +15,18 @@
 td, th {
   width: 25%;
 }
+
+
+
+.inline-table .mat-mdc-row.border-danger td:first-child{
+  border-left: solid 1px red !important;
+}
+
+.inline-table .mat-mdc-row.border-danger td:last-child{
+  border-right: solid 1px red !important;
+}
+
+.inline-table .mat-mdc-row.border-danger td{
+  border-bottom: solid 1px red !important;
+  border-top: solid 1px red !important;
+}
