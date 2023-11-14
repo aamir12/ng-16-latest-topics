@@ -7,7 +7,7 @@
                <div class="d-flex my-3 gap-2">
                     <button type="button" class="btn btn-primary btn-sm" (click)="toggleMode()"> {{isEditMode ?'Edit':'View'}} Mode </button>
                     <div *ngIf="isEditMode">
-                        <button type="button"  class="btn btn-primary btn-sm" (click)="addRow(numberOfRow)"> Add </button>
+                        <button type="button" [disabled]="!showTable"  class="btn btn-primary btn-sm" (click)="addRow()"> Add </button>
                     <input type="number" name="numberOfRow" [(ngModel)]="numberOfRow" >
                     </div>
                     
@@ -19,7 +19,7 @@
                 <table mat-table [dataSource]="dataSource" matSort>
                     <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema; index as colIndex">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="col.key === 'Actions' || isEditMode">
-                            {{ col.label }}
+                            <span *ngIf="col.required" class="text-danger fw-bold pe-1">*</span> {{ col.label }} 
                         </th>
                         <td mat-cell *matCellDef="let row; let rowIndex = index">
                             <ng-container *ngIf="!isEditMode">
@@ -42,17 +42,23 @@
                                     <!-- [ngClass]="{
                                         'border-danger':input1.invalid && isSubmit
                                     }" -->
-                                    <input *ngIf="col.type === 'alphaNumeric'" type="text"  pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$" [name]="'editingField_' + rowIndex + '_' + colIndex" [required]="!!col.required"  [(ngModel)]="row[col.key]" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" #input1="ngModel"  (blur)="showError(input1,'It should be alphanumeric')" />
+                                    <input *ngIf="col.type === 'alphaNumeric'" type="text"  pattern="[a-zA-Z0-9]+" [name]="'editingField_' + rowIndex + '_' + colIndex" [required]="!!col.required"  [(ngModel)]="row[col.key]" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" #input1="ngModel"  (blur)="showError(input1,'It should be alphanumeric')" [ngClass]="{
+                                        'border-danger':input1.invalid && (isSubmit || input1.touched)
+                                    }" />
 
                                     <input [ngClass]="{
                                         'border-danger':input2.invalid && isSubmit
-                                    }" *ngIf="col.type === 'text'" type="text" [name]="'editingField_' + rowIndex + '_' + colIndex"  [(ngModel)]="row[col.key]" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" [required]="!!col.required" #input2="ngModel" />
+                                    }" *ngIf="col.type === 'text'" type="text" [name]="'editingField_' + rowIndex + '_' + colIndex"  [(ngModel)]="row[col.key]" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" [required]="!!col.required" #input2="ngModel" [ngClass]="{
+                                        'border-danger':input2.invalid && (isSubmit || input2.touched)
+                                    }" />
 
                                     <input  [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" *ngIf="col.type === 'number'" type="text"  [name]="'editingField_' + rowIndex + '_' + colIndex" [(ngModel)]="row[col.key]"  currencyMask
-                                    [options]="{ align: 'center', allowNegative: false }" [min]="0" [required]="!!col.required" #input3="ngModel"/>
+                                    [options]="{ align: 'center', allowNegative: false }" [min]="0" [required]="!!col.required" #input3="ngModel" [ngClass]="{
+                                        'border-danger':input3.invalid && (isSubmit || input3.touched)
+                                    }"/>
                                 </ng-container>
                                 <ng-container *ngIf="col.key === 'Actions'">
-                                    <button type="button" (click)="deleteRow(rowIndex)" class="btn btn-primary btn-sm">Delete</button>
+                                    <button type="button" (click)="deleteRow(row)" class="btn btn-primary btn-sm">Delete</button>
                                 </ng-container>
                             </ng-container>
                         </td>
@@ -69,8 +75,8 @@
                   
                 </table>
               </div>
-              <div *ngIf="!showTable" class="text-center my-5">Updating...</div>
-            <mat-paginator [class.d-none]="!showTable || (dataSource && dataSource.data.length === 0)" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" aria-label="Select page of users"></mat-paginator>
+              <div *ngIf="!showTable" class="text-center my-5">Creating...</div>
+             <mat-paginator [class.d-none]="!showTable || (dataSource && dataSource.data.length === 0)" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" aria-label="Select page of users"></mat-paginator>
               
         </div>
     </div>

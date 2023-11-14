@@ -119,12 +119,12 @@ export class EditEableMatTableComponent{
     }
   }
 
-  addRow(numberOfAllocations:string) {
-    const numberOfRow = +numberOfAllocations;
+  addRow() {
+    const numberOfRow = +this.numberOfRow;
     if (numberOfRow <= 0) {
       return;
     }
-    
+    this.isSubmit = false;
     this.showTable = false;
     for (let j = 1; j <= numberOfRow; j++) {
       const record: any = this.getEmptyRecord();
@@ -134,6 +134,7 @@ export class EditEableMatTableComponent{
     this.updateTable();
     setTimeout(() => {
       this.showTable = true;
+      this.numberOfRow = '';
       this.paginator.firstPage();
     }, 500);
   }
@@ -145,7 +146,7 @@ export class EditEableMatTableComponent{
 
   getEmptyRecord(obj?:any) {
     return {
-      ID: -1,
+      rowId: this.utilityService.generateUniqueId(),
       title: '',
       description: '',
       totalValue: '',
@@ -170,7 +171,7 @@ export class EditEableMatTableComponent{
     this.isSubmit = true;
 
     if(form.invalid) {
-      alert("Please enter all required and valid values")
+      alert("Please enter all required.")
       return;
     }
     if(this.hasDuplicateTitles()) {
@@ -180,8 +181,8 @@ export class EditEableMatTableComponent{
     console.log(this.matTableList);
   }
 
-  deleteRow(index: number) {
-    this.matTableList = this.matTableList.filter((ind,_) => ind !== index);
+  deleteRow(row: any) {
+    this.matTableList = this.matTableList.filter((list) => list.rowId !== row.rowId);
     this.updateTable();
   }
 
