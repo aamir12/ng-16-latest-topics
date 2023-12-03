@@ -34,12 +34,14 @@ export class ConfigService {
   constructor(private http: HttpClient) { }
 
   fetchEndpoints() {
-    this.http.get<Endpoints>(`https://jsonplaceholder.typicode.com/posts/1`)
-      .pipe(delay(1000))
-      .subscribe({
-        next: (endpoints) => this.endpoints.next(endpoints),
-        error: () => this.endpoints.next(null)
-      })
+    this.endpoints.next({userId:1,title:'sample',body:'body',id:1});
+
+    // this.http.get<Endpoints>(`https://jsonplaceholder.typicode.com/posts/1`)
+    //   .pipe(delay(1000))
+    //   .subscribe({
+    //     next: (endpoints) => this.endpoints.next(endpoints),
+    //     error: () => this.endpoints.next(null)
+    //   })
   }
 
 

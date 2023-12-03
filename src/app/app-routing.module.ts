@@ -40,6 +40,15 @@ const routes: Routes = [
     path: 'inline-edit-able-mat-table',
     loadComponent: () => import('./pages/edit-eable-mat-table/edit-eable-mat-table.component').then(mod => mod.EditEableMatTableComponent)
   },
+  {
+    path: 'crud',
+    loadComponent: () => import('./pages/crud/crud.component').then(mod => mod.CrudComponent),
+    loadChildren: () =>
+      import('./pages/crud/crud-routing').then(
+        (mod) => mod.CRUD_ROUTES
+      ),
+
+  },
   
 ];
 

@@ -1,0 +1,28 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Post1",
+      "category": 2,
+      "body": "Desc1"
+    },
+    {
+      "id": 2,
+      "title": "Post2",
+      "category": 1,
+      "body": "Desc"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Cat1",
+      "body": "Test",
+      "id": 1
+    },
+    {
+      "name": "Cat2",
+      "body": "Desc",
+      "id": 2
+    }
+  ]
+}

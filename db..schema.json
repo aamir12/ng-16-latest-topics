@@ -1,0 +1,9 @@
+{
+    "posts":[
+        {
+            "title": "Sample",
+            "categories":["Category1"]
+        }
+    ],
+    "categories":["Category1","Category2","Category3"]
+}
