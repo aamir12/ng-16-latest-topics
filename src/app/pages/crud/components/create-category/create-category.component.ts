@@ -103,10 +103,12 @@ export class CreateCategoryComponent implements OnInit{
      * eg: Post => Category
      * fromPage : name of page, Post
      * fromPageMode : mode of from page, (Create,View,Edit)
-     * data: {
+     * mode: mode of this page; In which mode, we want to open Category page
+     * categoryId: requried in case of edit and view
+     * data: JSON.stringify({
      *   ui,
      *   form
-     * }; UI variables, form data,  
+     * }); UI variables, form data,  
      */
     this.fromPageMode = this.state.fromPageMode; 
     this.formPage = this.state.fromPage;
@@ -231,7 +233,6 @@ export class CreateCategoryComponent implements OnInit{
       this.returnToPreviousPage('/crud');
       return;
     }
-    
     this.router.navigate(['/crud/categories'])
   }
 

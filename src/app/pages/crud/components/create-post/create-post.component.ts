@@ -103,6 +103,8 @@ export class CreatePostComponent implements OnInit {
      * eg: Post => Category
      * fromPage : name of page, Post
      * fromPageMode : mode of from page, (Create,View,Edit)
+     * mode: mode of this page;
+     * postId: in case of veiw and edit mode
      * data: {
      *   ui,
      *   form
@@ -120,9 +122,10 @@ export class CreatePostComponent implements OnInit {
     }
     /**
      * Post => Category
-     * returnFrom: return from page: Category
-     * returnPageMode: fromPageMode
+     * returnPage: return from page: Category
+     * mode: fromPageMode
      * data: { ui, form, other} UI variables, form,
+     * returnPageData: {}
      */
   }
 
