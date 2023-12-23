@@ -1,20 +1,20 @@
 import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActionEnum, PageEnum } from '../../model';
+import { Router, RouterModule } from '@angular/router';
 import { PostService } from '../../post.service';
-import { last, lastValueFrom } from 'rxjs';
+import { ActionEnum, PageEnum } from '../../model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-create-post',
+  selector: 'app-create-user',
   standalone: true,
-  imports: [CommonModule,RouterModule,FormsModule],
-  templateUrl: './create-post.component.html',
-  styleUrls: ['./create-post.component.scss']
+  imports: [CommonModule,FormsModule,RouterModule],
+  templateUrl: './create-user.component.html',
+  styleUrls: ['./create-user.component.scss']
 })
-export class CreatePostComponent implements OnInit {
+export class CreateUserComponent implements OnInit{
   router = inject(Router);
   location = inject(Location);
   postService = inject(PostService);
@@ -303,7 +303,7 @@ export class CreatePostComponent implements OnInit {
       return;
     }
 
-    let postId = await this.getPostId();
+    //let postId = await this.getPostId();
     
   }
 

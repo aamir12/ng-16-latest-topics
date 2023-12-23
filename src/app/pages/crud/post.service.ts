@@ -15,6 +15,7 @@ export class PostService {
 
   postUrl = 'http://localhost:3000/posts/';
   categoriesUrl = 'http://localhost:3000/categories/';
+  usersUrl = 'http://localhost:3000/users/';
 
   constructor(private http:HttpClient) { }
   
@@ -56,6 +57,14 @@ export class PostService {
 
   updateCategory(id:any,data:any) {
     return this.http.patch<any>(this.categoriesUrl+id,data)
+  }
+
+  getUsers() {
+    return this.http.get<any[]>(this.usersUrl);
+  }
+
+  updateUser(id:any,data:any) {
+    return this.http.patch<any>(this.usersUrl+id,data)
   }
 
   

@@ -6,13 +6,13 @@ import { PostService } from '../../post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-category-list',
+  selector: 'app-user-list',
   standalone: true,
   imports: [CommonModule,RouterModule],
-  templateUrl: './category-list.component.html',
-  styleUrls: ['./category-list.component.scss']
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.scss']
 })
-export class CategoryListComponent  implements OnInit{
+export class UserListComponent implements OnInit {
   router = inject(Router);
   postService = inject(PostService);
   destroyRef = inject(DestroyRef);

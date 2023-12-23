@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ActionEnum } from '../../model';
 import { PostService } from '../../post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { combineLatest, forkJoin } from 'rxjs';
+import { combineLatest, forkJoin, lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-list-post',
@@ -60,15 +60,26 @@ export class ListPostComponent implements OnInit{
     }})
   }
 
-  onDelete(id:any) {
+  async onDelete(id:any) {
     if(!confirm('Are you sure, You want to delete')) {
       return;
     }
 
-    this.postService.deletePost(id)
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((res)=> {
-      this.fetchPosts();
+    const request = [];
+
+    //remove post from all users list
+    const allUsers = await lastValueFrom(this.postService.getUsers());
+    allUsers.forEach(user => {
+      const posts = user.posts  ? JSON.parse(user.posts) : [];
+      if(posts.includes(id)) {
+        user.posts = posts.filter((postId:any)=> postId !== id);
+        request.push(lastValueFrom(this.postService.updateUser(user.id,{posts:JSON.stringify(user.posts)})))
+      }
     })
+
+    request.push(lastValueFrom(this.postService.deletePost(id)));
+    await Promise.all(request);
+    this.fetchPosts();
+  
   }
 }

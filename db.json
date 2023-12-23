@@ -1,15 +1,15 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "Post1",
-      "category": 2,
-      "body": "Desc1"
+      "id": 3,
+      "title": "Post3",
+      "category": 3,
+      "body": "Desc 3"
     },
     {
-      "id": 2,
-      "title": "Post2",
-      "category": 1,
+      "id": 4,
+      "title": "Test",
+      "category": 2,
       "body": "Desc"
     }
   ],
@@ -23,6 +23,23 @@
       "name": "Cat2",
       "body": "Desc",
       "id": 2
+    },
+    {
+      "name": "Cat4",
+      "body": "Swax",
+      "id": 3
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "User1",
+      "posts": "[3]"
+    },
+    {
+      "id": 1,
+      "name": "User2",
+      "posts": "[3]"
     }
   ]
 }

@@ -4,6 +4,9 @@ import { CreatePostComponent } from "./components/create-post/create-post.compon
 import { CategoriesComponent } from "./components/categories/categories.component";
 import { CreateCategoryComponent } from "./components/create-category/create-category.component";
 import { CategoryListComponent } from "./components/category-list/category-list.component";
+import { UserListComponent } from "./components/user-list/user-list.component";
+import { CreateUserComponent } from "./components/create-user/create-user.component";
+import { RetryComponent } from "./components/retry/retry.component";
 
 export const CRUD_ROUTES: Route[] = [
     {
@@ -43,6 +46,26 @@ export const CRUD_ROUTES: Route[] = [
                 component:CreateCategoryComponent
             }
         ]
+    },
+    {
+        path:'users',
+        component: UserListComponent,
+    },
+    {
+        path:'users/create',
+        component: CreateUserComponent,
+    },
+    {
+        path:'users/edit',
+        component: CreateUserComponent,
+    },
+    {
+        path:'users/view',
+        component: CreateUserComponent,
+    },
+    {
+        path:'retry',
+        component: RetryComponent,
     }
     
 ]
