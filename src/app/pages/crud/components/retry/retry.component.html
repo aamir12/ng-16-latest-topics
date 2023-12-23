@@ -18,5 +18,10 @@
                 </tbody>
             </table>
         </div>
+
+        <div *ngIf="postService.errorObs | async">
+            <p>Failed to fetch </p>
+            <button (click)="postService.retryFetchPost()">Retry</button>
+        </div>
     </div>
 </div>

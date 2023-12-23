@@ -20,7 +20,8 @@ export class RetryComponent {
   posts:any = [];
   ngOnInit(): void {
    // this.fetchType1();
-    this.fetchType2();
+    //this.fetchType2();
+    this.fetchType3();
   }
 
   fetchType1() {
@@ -64,6 +65,27 @@ export class RetryComponent {
       retry({count: 5, delay: (error, retryCount) => {
         return retryCount === 1 ? timer(2000) : of({})
       }}),
+    )
+    .subscribe({
+      next:(res) => {
+        console.log("success");
+        console.log(res);
+        this.posts = res;
+      },
+      error:(error) => {
+        console.log("error");
+        console.log(error);
+      },
+      complete: () => {
+        console.log("complete")
+      }
+    });
+  }
+
+  fetchType3() {
+    this.postService.allPosts()
+    .pipe(
+      takeUntilDestroyed(this.destroyRef),
     )
     .subscribe({
       next:(res) => {

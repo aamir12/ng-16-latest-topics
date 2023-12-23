@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject, retry, tap } from 'rxjs';
 
 export interface Post {
   userId:number,
@@ -17,8 +18,31 @@ export class PostService {
   categoriesUrl = 'http://localhost:3000/categories/';
   usersUrl = 'http://localhost:3000/users/';
 
+  private error$ = new Subject<Error | null>();
+  errorObs = this.error$.asObservable();
+  private retry$ = new Subject<void>();
+  retryObs = this.error$.asObservable();
+
   constructor(private http:HttpClient) { }
   
+  allPosts() {
+    return this.http.get<any[]>(this.postUrl).pipe(
+      tap(() => {
+        this.error$.next(null);
+      }),
+      retry({
+        delay: (err) => {
+          this.error$.next(err);
+          return this.retry$;
+        },
+      })
+    );
+  }
+
+  retryFetchPost() {
+    this.retry$.next();
+  }
+
   getPosts() {
     return this.http.get<any[]>(this.postUrl);
   }
