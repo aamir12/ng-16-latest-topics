@@ -11,6 +11,12 @@
       "title": "Test",
       "category": 2,
       "body": "Desc"
+    },
+    {
+      "id": 5,
+      "title": "GPS",
+      "category": 4,
+      "body": "desc"
     }
   ],
   "categories": [
@@ -28,6 +34,11 @@
       "name": "Cat4",
       "body": "Swax",
       "id": 3
+    },
+    {
+      "name": "CAP4",
+      "body": "des",
+      "id": 4
     }
   ],
   "users": [
