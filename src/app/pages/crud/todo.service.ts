@@ -23,6 +23,7 @@ export class TodoService extends ResourceService<IPost>{
   }
 
   createPost(post:IPost):Observable<IPost> {
+    console.log("Create")
     delete post.id;
     return this.http.post<IPost>('http://localhost:3000/articals',post)
     .pipe(

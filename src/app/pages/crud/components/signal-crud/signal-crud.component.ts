@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { IPost, TodoService } from '../../todo.service';
-import { Observable, take } from 'rxjs';
+import { Observable, finalize, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signal-crud',
@@ -13,10 +13,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class SignalCrudComponent implements OnInit{
   todoService = inject(TodoService);
-  fb = inject(FormBuilder);
+  fb = inject(UntypedFormBuilder);
 
+  error!:string;
+  isLoading = false;
   form = this.fb.group({
-    id:[-1],
+    id:[''],
     title:['',[Validators.required]]
   })
 
@@ -25,15 +27,26 @@ export class SignalCrudComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.todoService.getPosts().pipe(take(1)).subscribe();
+    this.isLoading = true;
+    this.todoService.getPosts().pipe(
+      take(1),
+      finalize(() => this.isLoading = false)
+      ).subscribe();
   }
 
   onEdit(todo:IPost) {
+    // const formData = {
+    //   id: todo.id?.toString(),
+    //   title:todo.title
+    // }
     this.form.patchValue(todo);
   }
 
   onDelete(todo:IPost) {
-    this.todoService.deletePost(todo).pipe(take(1)).subscribe();
+    this.todoService.deletePost(todo).pipe(
+      take(1),
+      finalize(() => this.isLoading = false)
+      ).subscribe();
   }
 
   onSave() {
@@ -43,8 +56,11 @@ export class SignalCrudComponent implements OnInit{
     console.log(this.form.value);
     const post = this.form.value as IPost;
     let actionObs: Observable<IPost>;
-    actionObs = post.id === -1 ? this.todoService.createPost(post) : this.todoService.updatePost(post);
-    actionObs.pipe(take(1)).subscribe(() => this.form.reset())
+    actionObs = post.id ? this.todoService.updatePost(post) : this.todoService.createPost(post);
+    actionObs.pipe(
+      take(1),
+      finalize(() => this.isLoading = false)
+    ).subscribe(() => this.form.reset())
   }
 
 
