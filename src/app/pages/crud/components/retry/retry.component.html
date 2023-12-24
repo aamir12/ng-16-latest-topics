@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-sm-between mb-3 align-items-start justify-content-center flex-column flex-sm-row">
-    <h2>Retry,RetryWhen </h2>
+    <h2>Retry,RetryWhen and Latest version of retry </h2>
 </div>
 <div class="card">
     <div class="card-body">
@@ -19,9 +19,9 @@
             </table>
         </div>
 
-        <div *ngIf="postService.errorObs | async">
+        <div *ngIf="(postService.errorObs | async)">
             <p>Failed to fetch </p>
-            <button (click)="postService.retryFetchPost()">Retry</button>
+            <button (click)="retry()">Retry</button>
         </div>
     </div>
 </div>

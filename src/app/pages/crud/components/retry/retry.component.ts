@@ -3,7 +3,7 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { PostService } from '../../post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { delayWhen, of, retry, retryWhen, scan, timer } from 'rxjs';
+import { delayWhen, finalize, of, retry, retryWhen, scan, timer } from 'rxjs';
 
 @Component({
   selector: 'app-retry',
@@ -82,6 +82,7 @@ export class RetryComponent {
     });
   }
 
+  //see inside service: latest version of retry
   fetchType3() {
     this.postService.allPosts()
     .pipe(
@@ -101,6 +102,10 @@ export class RetryComponent {
         console.log("complete")
       }
     });
+  }
+
+  retry() {
+    this.postService.retryFetchPost();
   }
 
 }

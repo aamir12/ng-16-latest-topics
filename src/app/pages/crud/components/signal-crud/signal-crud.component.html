@@ -1,0 +1,51 @@
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSave()">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input
+                    type="text"
+                    formControlName="title"
+                    class="form-control"
+                    id="title"
+                    aria-describedby="helpId"
+                    placeholder=""
+                />
+            </div>
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Save
+            </button>
+            
+        </form>
+        
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let todo of todos()">
+                    <td>{{todo.title}}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <button class="btn btn-outline-warning" (click)="onEdit(todo)">Edit</button>
+                            <button class="btn btn-outline-danger" (click)="onDelete(todo)">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,7 @@ import { CategoryListComponent } from "./components/category-list/category-list.
 import { UserListComponent } from "./components/user-list/user-list.component";
 import { CreateUserComponent } from "./components/create-user/create-user.component";
 import { RetryComponent } from "./components/retry/retry.component";
+import { SignalCrudComponent } from "./components/signal-crud/signal-crud.component";
 
 export const CRUD_ROUTES: Route[] = [
     {
@@ -66,6 +67,10 @@ export const CRUD_ROUTES: Route[] = [
     {
         path:'retry',
         component: RetryComponent,
+    },
+    {
+        path:'signalcrud',
+        component: SignalCrudComponent,
     }
     
 ]
