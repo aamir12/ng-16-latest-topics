@@ -16,3 +16,4 @@ angular 17
 - Typed Form
 - Gloabl Loader
 - Dynamic Dialog Box
+- Token interceptor
