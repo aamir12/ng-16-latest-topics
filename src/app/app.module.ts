@@ -10,6 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InitializerModule } from './core/modules/initializer.module';
 import { NetworkInterceptor } from './core/interceptors/network.interceptor';
 import { GlobalLoaderComponent } from './components/global-loader/global-loader.component';
+import { GlobalHttpInterceptor } from './core/interceptors/global.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,11 @@ import { GlobalLoaderComponent } from './components/global-loader/global-loader.
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NetworkInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalHttpInterceptor,
       multi: true,
     }
   ],

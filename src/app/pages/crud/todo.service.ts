@@ -14,7 +14,6 @@ export interface IPost {
   providedIn: 'root'
 })
 export class TodoService extends ResourceService<IPost>{
-  router = inject(Router);
   selectedPost = signal<IPost | null>(null);
 
   getPosts(): Observable<IPost[]> {
@@ -23,19 +22,18 @@ export class TodoService extends ResourceService<IPost>{
       .pipe(
         tap((res) => this.setResources(res)),
         catchError((error) => {
-          return handleError(error,this.router)
+          return handleError(error)
         })
       );
   }
 
   createPost(post:IPost):Observable<IPost> {
-    console.log("Create")
     delete post.id;
     return this.http.post<IPost>('http://localhost:3000/articals',post)
     .pipe(
       tap(this.upsertResource),
       catchError((error) => {
-        return handleError(error,this.router)
+        return handleError(error)
       }));
   }
 
@@ -44,7 +42,7 @@ export class TodoService extends ResourceService<IPost>{
     .pipe(
       tap(this.upsertResource),
       catchError((error) => {
-        return handleError(error,this.router)
+        return handleError(error)
       }));
   }
 
@@ -53,7 +51,7 @@ export class TodoService extends ResourceService<IPost>{
     .pipe(
       tap(() => this.removeResource(post.id as number)),
       catchError((error) => {
-        return handleError(error,this.router)
+        return handleError(error)
       }));
   }
 
