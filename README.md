@@ -14,3 +14,4 @@ angular 17
 - Ng template outlet
 - Signal CURD
 - Typed Form
+- Gloabl Loader

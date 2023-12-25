@@ -55,20 +55,16 @@
   ],
   "articals": [
     {
-      "id": 1,
-      "title": "Title1df1212"
+      "title": "sdfsd",
+      "id": 1
+    },
+    {
+      "title": "sdfdsf",
+      "id": 2
     },
     {
       "title": "sdfsdf",
-      "id": 4
-    },
-    {
-      "title": "ghjghj",
-      "id": 6
-    },
-    {
-      "id": 7,
-      "title": "sdsd"
+      "id": 3
     }
   ]
 }

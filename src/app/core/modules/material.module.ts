@@ -25,6 +25,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import { MatSortModule} from '@angular/material/sort';
 import { MatTableModule} from '@angular/material/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -59,7 +60,8 @@ import { MatTableModule} from '@angular/material/table';
     MatMenuModule,
     MatTableModule,
     MatSortModule, 
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialModule { }

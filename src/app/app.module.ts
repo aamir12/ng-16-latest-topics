@@ -6,13 +6,16 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './core/modules/material.module';
 import { HeaderComponent } from './components/header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InitializerModule } from './core/modules/initializer.module';
+import { NetworkInterceptor } from './core/interceptors/network.interceptor';
+import { GlobalLoaderComponent } from './components/global-loader/global-loader.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    GlobalLoaderComponent
   ],
   imports: [
     HttpClientModule,
@@ -22,7 +25,13 @@ import { InitializerModule } from './core/modules/initializer.module';
     MaterialModule,
     InitializerModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NetworkInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
