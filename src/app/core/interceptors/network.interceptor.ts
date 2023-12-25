@@ -17,12 +17,13 @@ export class NetworkInterceptor implements HttpInterceptor {
     this.loaderService.show();
     this.totalRequests++;
     return next.handle(request).pipe(
+      delay(1000),
       finalize(() => {
         this.completedRequests++;
         if (this.completedRequests === this.totalRequests) {
-          this.loaderService.hide();
           this.completedRequests = 0;
           this.totalRequests = 0;
+          this.loaderService.hide();
         }
       })
     );

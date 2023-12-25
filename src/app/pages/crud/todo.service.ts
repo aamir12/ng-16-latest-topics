@@ -21,7 +21,6 @@ export class TodoService extends ResourceService<IPost>{
     return this.http
       .get<IPost[]>('http://localhost:3000/articals')
       .pipe(
-        delay(1000),
         tap((res) => this.setResources(res)),
         catchError((error) => {
           return handleError(error,this.router)
@@ -34,7 +33,6 @@ export class TodoService extends ResourceService<IPost>{
     delete post.id;
     return this.http.post<IPost>('http://localhost:3000/articals',post)
     .pipe(
-      delay(1000),
       tap(this.upsertResource),
       catchError((error) => {
         return handleError(error,this.router)
@@ -44,7 +42,6 @@ export class TodoService extends ResourceService<IPost>{
   updatePost(post:IPost):Observable<IPost> {
     return this.http.put<IPost>(`http://localhost:3000/articals/${post.id}`,post)
     .pipe(
-      delay(1000),
       tap(this.upsertResource),
       catchError((error) => {
         return handleError(error,this.router)
@@ -54,7 +51,6 @@ export class TodoService extends ResourceService<IPost>{
   deletePost(post:IPost):Observable<IPost> {
     return this.http.delete<IPost>(`http://localhost:3000/articals/${post.id}`)
     .pipe(
-      delay(1000),
       tap(() => this.removeResource(post.id as number)),
       catchError((error) => {
         return handleError(error,this.router)
