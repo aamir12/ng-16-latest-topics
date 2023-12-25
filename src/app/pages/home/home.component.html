@@ -16,4 +16,8 @@
     <ng-template #altAction>
         <app-weather-custom-action></app-weather-custom-action>
     </ng-template>
+
+    <button mat-raised-button (click)="lazyDialogService.openDialog('lazy-dialog')">
+        Dynamic Dialog 
+    </button>
 </div>

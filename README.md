@@ -15,3 +15,4 @@ angular 17
 - Signal CURD
 - Typed Form
 - Gloabl Loader
+- Dynamic Dialog Box
