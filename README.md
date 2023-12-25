@@ -13,3 +13,4 @@ angular 17
 - StandAlone Component
 - Ng template outlet
 - Signal CURD
+- Typed Form
