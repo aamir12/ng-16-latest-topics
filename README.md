@@ -2,7 +2,7 @@
 
 ## Version
 
-angular 16
+angular 17
 
 ## Features
 
@@ -12,3 +12,4 @@ angular 16
 - Gaurds
 - StandAlone Component
 - Ng template outlet
+- Signal CURD
