@@ -41,6 +41,10 @@ const routes: Routes = [
     loadComponent: () => import('./pages/edit-eable-mat-table/edit-eable-mat-table.component').then(mod => mod.EditEableMatTableComponent)
   },
   {
+    path: 'lazy-images',
+    loadComponent: () => import('./pages/lazy-load-image/lazy-load-image.component').then(mod => mod.LazyLoadImageComponent)
+  },
+  {
     path: 'crud',
     loadComponent: () => import('./pages/crud/crud.component').then(mod => mod.CrudComponent),
     loadChildren: () =>

@@ -17,3 +17,8 @@ angular 17
 - Gloabl Loader
 - Dynamic Dialog Box
 - Token interceptor
+- Custom Library ak-users
+    npx -p @angular/cli@17 ng generate library ak-users
+    npx -p @angular/cli@17 ng build ak-users --watch 
+
+- Lazy load images
