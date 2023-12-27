@@ -10,14 +10,14 @@ import { ConfirmDialogData } from 'src/app/components/confirm/confirm.model';
 export class DialogService {
 
   constructor(private dialog: MatDialog) {}
-  confirmDialog(data: ConfirmDialogData,config:Partial<MatDialogConfig>={}): Observable<boolean> {
+  confirmDialog(data: ConfirmDialogData,config?:MatDialogConfig): Observable<boolean> {
     return this.dialog
       .open(ConfirmComponent, {
-        data,
-        width: config.width || '400px',
+        data: data,
+        width: config?.width || '400px',
         disableClose: true,
         enterAnimationDuration:200,
-        position: config.position || {top:'100px'}
+        position: config?.position || {top:'100px'}
       })
       .afterClosed();
   }

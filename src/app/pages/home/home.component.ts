@@ -7,6 +7,7 @@ import { LazyDialogService } from 'src/app/core/services/lazy-dialog.service';
 import { AkUsersComponent } from 'ak-users';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { lastValueFrom } from 'rxjs';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
@@ -31,12 +32,17 @@ export class HomeComponent {
   }
 
   async confirmCancel() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '500px';
+    dialogConfig.position = {
+      top:'10%'
+    }
     const result = await lastValueFrom(this.dialogService.confirmDialog({
       title: 'Please confirm action',
       message: 'Please confirm whether you want to do this!',
       confirmText: 'Confirm',
       cancelText: 'Cancel',
-    }));
+    },dialogConfig));
 
     console.log(result)
   }
