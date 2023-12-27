@@ -21,11 +21,16 @@
         Dynamic Dialog 
     </button>
 
-    <ak-users></ak-users>
+    
+    <div class="my-5">
+        <ak-users></ak-users>
+    </div>
 
-    <br>
 
-    <button mat-raised-button (click)="yesNoDialog()">Open Yes/No</button>
-    <button mat-raised-button (click)="confirmCancel()">Open Confirm/Cancel</button>
-    <button mat-raised-button (click)="yesNotSure()">Open Yes/I'm not sure</button>
+    <div class="d-flex gap-3">
+        <button mat-raised-button (click)="yesNoDialog()">Open Yes/No</button>
+        <button mat-raised-button (click)="confirmCancel()">Open Confirm/Cancel</button>
+        <button mat-raised-button (click)="yesNotSure()">Open Yes/I'm not sure</button>
+
+    </div>
 </div>
