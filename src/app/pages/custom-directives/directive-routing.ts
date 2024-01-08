@@ -27,7 +27,7 @@ export const CUSTOM_DIRECTIVES_ROUTES: Route[] = [
         component:SinglePostComponent,
         children:[
             {
-                path:':postId',
+                path:':postId/:testID',
                 component:NestedChildComponent
             }
         ]

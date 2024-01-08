@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { CryptoService } from 'src/app/core/services/crypto.service';
 
 @Component({
   selector: 'app-nested-child',
@@ -11,12 +12,21 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NestedChildComponent implements OnInit{
   route = inject(ActivatedRoute);
+  cryptoService = inject(CryptoService);
   paramId!:any;
   mode!:any;
+  testID!:any;
   ngOnInit(): void {
+
+
     this.route.params.subscribe((params)=> {
       if(params['postId']){
-        this.paramId = params['postId']
+        this.paramId = params['postId'];
+        this.testID = this.cryptoService.decrypt(params['testID']);
+        if(this.testID) {
+          console.log("Valid");
+        }
+        console.log(this.testID);
       }
     })
 

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { DataService, Post } from '../../data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CryptoService } from '../../../../core/services/crypto.service';
 
 @Component({
   selector: 'app-navigation',
@@ -15,6 +16,7 @@ export class NavigationComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   location = inject(Location);
+  cryptoService = inject(CryptoService);
 
   posts$ = this.http.getPosts();
 
@@ -27,7 +29,13 @@ export class NavigationComponent {
   }
 
   customNavigate(id:number) {
-    this.router.navigate(['/custom-directives/single-post',id],{
+    const encId = this.cryptoService.encrypt(id.toString());
+    console.log(encId);
+
+    const decryptId = this.cryptoService.decrypt(encId);
+    console.log(decryptId);
+
+    this.router.navigate(['/custom-directives/single-post',id,encId],{
       queryParams:{mode:'create'},
     })
   }
