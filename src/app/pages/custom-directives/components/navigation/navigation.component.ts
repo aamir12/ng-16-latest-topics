@@ -29,13 +29,8 @@ export class NavigationComponent {
   }
 
   customNavigate(id:number) {
-    const encId = this.cryptoService.encrypt(id.toString());
-    console.log(encId);
-
-    const decryptId = this.cryptoService.decrypt(encId);
-    console.log(decryptId);
-
-    this.router.navigate(['/custom-directives/single-post',id,encId],{
+    const encryptedId = this.cryptoService.encrypt(id.toString());
+    this.router.navigate(['/custom-directives/single-post',id,encryptedId],{
       queryParams:{mode:'create'},
     })
   }

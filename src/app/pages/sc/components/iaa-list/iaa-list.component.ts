@@ -4,19 +4,21 @@ import { Router, RouterModule } from '@angular/router';
 import { PostService } from '../../post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { combineLatest, forkJoin, lastValueFrom } from 'rxjs';
+import { CryptoService } from 'src/app/core/services/crypto.service';
 import { ActionEnum } from 'src/app/core/models/utility.model';
 
 @Component({
-  selector: 'app-list-post',
+  selector: 'app-iaa-list',
   standalone: true,
   imports: [CommonModule,RouterModule],
-  templateUrl: './list-post.component.html',
-  styleUrls: ['./list-post.component.scss']
+  templateUrl: './iaa-list.component.html',
+  styleUrls: ['./iaa-list.component.scss']
 })
-export class ListPostComponent implements OnInit{
+export class IAAListComponent implements OnInit{
   router = inject(Router);
   postService = inject(PostService);
   destroyRef = inject(DestroyRef);
+  cryptoService = inject(CryptoService)
 
   posts:any = [];
   ngOnInit(): void {
@@ -41,23 +43,33 @@ export class ListPostComponent implements OnInit{
   }
 
   addPost() {
-    this.router.navigate(['./crud/create'],{state:{
+    this.router.navigate(['/sc','iaa','create'],{state:{
       mode:ActionEnum.Create
     }})
   }
 
   onView(id:any) {
-    this.router.navigate(['./crud/view'],{state:{
-      mode:ActionEnum.View,
-      postId:id
-    }})
+    const encID = this.cryptoService.encrypt(JSON.stringify({
+      postId: id,
+      mode: ActionEnum.View
+    }));
+    this.router.navigate(['/sc','iaa',encID]);
+    // this.router.navigate(['./crud/view'],{state:{
+    //   mode:ActionEnum.View,
+    //   postId:id
+    // }})
   }
 
   onEdit(id:any) {
-    this.router.navigate(['./crud/create'],{state:{
-      mode:ActionEnum.Edit,
-      postId:id
-    }})
+    const encID = this.cryptoService.encrypt(JSON.stringify({
+      postId: id,
+      mode: ActionEnum.Edit
+    }));
+    this.router.navigate(['/sc','iaa',encID]);
+    // this.router.navigate(['./crud/create'],{state:{
+    //   mode:ActionEnum.Edit,
+    //   postId:id
+    // }})
   }
 
   async onDelete(id:any) {

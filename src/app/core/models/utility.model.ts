@@ -1,3 +1,11 @@
+
+export type NonArrayObject = { [key:string]:any } & { length?: never };
+
+export enum SessionKey {
+    POST = 'POST',
+    CATEGORY = 'CATEGORY'
+}
+
 export enum ActionEnum  {
     Create = 'Create',
     Edit = 'Edit',

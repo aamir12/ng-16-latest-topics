@@ -13,17 +13,14 @@ import { CreateArticalComponent } from '../create-artical/create-artical.compone
 export class SignalCrudComponent implements OnInit{
   todoService = inject(TodoService);
   error!:string;
-  isLoading = false;
 
   get todos() {
     return this.todoService.resources;
   }
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.todoService.getPosts().pipe(
       take(1),
-      finalize(() => this.isLoading = false)
       ).subscribe({
         error: (error) => {
           console.log(error);
@@ -34,10 +31,8 @@ export class SignalCrudComponent implements OnInit{
 
 
   onDelete(todo:IPost) {
-    this.isLoading = true;
     this.todoService.deletePost(todo).pipe(
       take(1),
-      finalize(() => this.isLoading = false)
       ).subscribe();
   }
 

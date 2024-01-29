@@ -1,7 +1,7 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { ActionEnum } from '../../model';
+import { ActionEnum, PageEnum } from '../../../../core/models/utility.model';
 import { PostService } from '../../post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

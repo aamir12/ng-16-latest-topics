@@ -51,7 +51,14 @@ const routes: Routes = [
       import('./pages/crud/crud-routing').then(
         (mod) => mod.CRUD_ROUTES
       ),
-
+  },
+  {
+    path: 'sc',
+    loadComponent: () => import('./pages/sc/sc.component').then(mod => mod.SCComponent),
+    loadChildren: () =>
+      import('./pages/sc/sc-routing').then(
+        (mod) => mod.SC_ROUTES
+      ),
   },
   
 ];

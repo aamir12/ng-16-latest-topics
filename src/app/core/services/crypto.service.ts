@@ -3,6 +3,12 @@ import * as cryptoJS from 'crypto-js';
 
 import { environment } from '../../../environments/environment.development';
 
+/**
+ * Steps:
+ * npm i crypto-js
+ * npm i --save-dev @types/crypto-js
+ */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,8 +23,8 @@ export class CryptoService {
   decrypt(encryptedId: string): string | null {
     let decryptedId;
     try {
-      const decodedStr = decodeURIComponent(encryptedId);
-      decryptedId = cryptoJS.AES.decrypt(decodedStr, this.secretKey).toString(cryptoJS.enc.Utf8);
+      const encryptedStr = decodeURIComponent(encryptedId);
+      decryptedId = cryptoJS.AES.decrypt(encryptedStr, this.secretKey).toString(cryptoJS.enc.Utf8);
     } catch (error) {
       decryptedId = null;
     }
@@ -26,4 +32,9 @@ export class CryptoService {
     return decryptedId;
   }
 
+  
+
 }
+
+ 
+//U2FsdGVkX18of8wXGQNSYpz7BfHRHkYoPuGn%252BrshQso%253D

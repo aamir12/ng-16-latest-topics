@@ -13,7 +13,6 @@ export class NetworkInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log("NetworkInterceptor")
     this.loaderService.show();
     this.totalRequests++;
     return next.handle(request).pipe(

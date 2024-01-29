@@ -1,18 +1,18 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { ActionEnum } from '../../../../core/models/utility.model';
+import { ActionEnum } from '../../model';
 import { PostService } from '../../post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-category-list',
   standalone: true,
   imports: [CommonModule,RouterModule],
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  templateUrl: './category-list.component.html',
+  styleUrls: ['./category-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class CategoryListComponent  implements OnInit{
   router = inject(Router);
   postService = inject(PostService);
   destroyRef = inject(DestroyRef);

@@ -3,7 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActionEnum, PageEnum } from '../../model';
+import { ActionEnum, PageEnum } from '../../../../core/models/utility.model';
 import { PostService } from '../../post.service';
 import { last, lastValueFrom } from 'rxjs';
 

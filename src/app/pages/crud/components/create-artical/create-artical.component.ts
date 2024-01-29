@@ -35,13 +35,11 @@ export class CreateArticalComponent{
     if(this.form.invalid) {
       return
     }
-    this.isLoading = true;
     const post = this.form.value as IPost;
     let actionObs: Observable<IPost>;
     actionObs = post.id ? this.todoService.updatePost(post) : this.todoService.createPost(post);
     actionObs.pipe(
-      take(1),
-      finalize(() => this.isLoading = false)
+      take(1)
     ).subscribe(() => this.form.reset())
   }
 

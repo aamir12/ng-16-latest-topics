@@ -1,29 +1,34 @@
 import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { PostService } from '../../post.service';
-import { ActionEnum, PageEnum } from '../../../../core/models/utility.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { lastValueFrom } from 'rxjs';
+import { PostService } from '../../post.service';
+import { last, lastValueFrom } from 'rxjs';
+import { CryptoService } from 'src/app/core/services/crypto.service';
+import { ActionEnum, PageEnum } from 'src/app/core/models/utility.model';
 
 @Component({
-  selector: 'app-create-user',
+  selector: 'app-create-iaa',
   standalone: true,
-  imports: [CommonModule,FormsModule,RouterModule],
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+  imports: [CommonModule,RouterModule,FormsModule],
+  templateUrl: './create-iaa.component.html',
+  styleUrls: ['./create-iaa.component.scss']
 })
-export class CreateUserComponent implements OnInit{
+export class CreateIAAComponent implements OnInit {
   router = inject(Router);
   location = inject(Location);
   postService = inject(PostService);
   destroyRef = inject(DestroyRef);
+  cryptoService = inject(CryptoService);
+  route = inject(ActivatedRoute);
+
   @ViewChild('form') form!:NgForm;
 
   navigation!:any;
   state!:any;
   operationTitle = '';
+  postId!:number;
   post:any = {
     id:null,
     title:'',
@@ -36,6 +41,7 @@ export class CreateUserComponent implements OnInit{
   mode!:ActionEnum;
   fromPageMode!:ActionEnum;
   actionMode = ActionEnum;
+
   constructor() {
     this.navigation = this.router.getCurrentNavigation()
     this.state = this.location.getState();
@@ -43,21 +49,47 @@ export class CreateUserComponent implements OnInit{
 
 
   async ngOnInit() {
-    this.checkPermission();
+    if(!this.decodeParams()) return;
     await this.fetchMaster();
     this.setup()
   }
 
-  checkPermission() {
-    console.log("State");
-    console.log(this.state);
+  decodeParams() {
+    const param = this.route.snapshot.params['encId'];
+    if(param === 'create') {
+      this.mode = ActionEnum.Create
+    }else {
+      const decodedData:any = this.cryptoService.decrypt(param);
+      if(!decodedData) {
+        this.router.navigate(['./crud']);
+        return false;
+      }
+      const data = JSON.parse(decodedData);
+      if(data['mode'] === ActionEnum.Edit) {
+        this.mode = ActionEnum.Edit;
+        this.postId = data['postId'];
+      }else if(data['mode'] === ActionEnum.View) {
+        this.mode = ActionEnum.View;
+        this.postId = data['postId'];
+      }
 
-    console.log("Navigation");
-    console.log(this.navigation);
-
-    if(!this.state.mode) {
-      this.router.navigate(['./crud']);
     }
+
+    return true;
+    
+  }
+
+  checkPermission() {
+    // console.log("State");
+    // console.log(this.state);
+
+    // console.log("Navigation");
+    // console.log(this.navigation);
+
+
+    // if(!this.state.mode) {
+    //   this.router.navigate(['./crud']);
+    // }
     // if(!this.navigation?.mode) {
     // // this.router.navigate(['./crud'])
     // }
@@ -68,6 +100,9 @@ export class CreateUserComponent implements OnInit{
     
     //check Permission here
     
+    
+
+
   }
 
   setup() {
@@ -79,7 +114,6 @@ export class CreateUserComponent implements OnInit{
     if(returnPage) {
       this.returnPageSetup();
     }else {
-      this.mode = mode;
       this.generalSetup();
     }
 
@@ -98,7 +132,7 @@ export class CreateUserComponent implements OnInit{
   }
 
   fromPageSetup() {
-    console.log("fromPageSetup");
+    // console.log("fromPageSetup");
     /**
      * eg: Post => Category
      * fromPage : name of page, Post
@@ -116,7 +150,7 @@ export class CreateUserComponent implements OnInit{
   }
 
   returnPageSetup() {
-    console.log("returnPageSetup");
+    // console.log("returnPageSetup");
     if(this.state.returnPage === PageEnum.Category) {
       this.setUpLocalFromReturnPage();
       this.setByCategory()
@@ -151,26 +185,24 @@ export class CreateUserComponent implements OnInit{
 
   createSetup() {
     this.operationTitle = ActionEnum.Create;
-    console.log("createSetup")
+    // console.log("createSetup")
     this.mode = ActionEnum.Create;
   }
 
   editSetup() {
     this.operationTitle = ActionEnum.Edit;
-    console.log("editSetup")
     this.mode = ActionEnum.Edit;
     this.fetchPost();
   }
 
   veiwSetup() {
     this.operationTitle = ActionEnum.View;
-    console.log("viewsetUp");
     this.mode = ActionEnum.View;
     this.fetchPost();
   }
 
   fetchPost() {
-    this.postService.getPost(this.state.postId)
+    this.postService.getPost(this.postId)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res=> {
       this.post = res;
@@ -185,13 +217,15 @@ export class CreateUserComponent implements OnInit{
 
     const res = await Promise.all(request);
     this.categories = res[0];
-    const postId = this.state.postId;
+    const postId = this.postId;
     res[1].forEach(user => {
       const posts = user.posts  ? JSON.parse(user.posts) : [];
       if(postId && posts.includes(postId)) {
         this.userList.push(user);
       }
     })
+
+    console.log("fetchMaster")
   }
 
 
@@ -199,7 +233,6 @@ export class CreateUserComponent implements OnInit{
     if(this.form.invalid) {
       return;
     }
-    console.log("OnSubmit");
 
     if(this.mode === ActionEnum.Create) {
       await this.addPost();
@@ -282,8 +315,6 @@ export class CreateUserComponent implements OnInit{
 
   openUser(event:Event,user:any) {
     event.preventDefault();
-    console.log("openUser")
-    console.log(user);
   }
 
   async getPostId() {
@@ -303,14 +334,20 @@ export class CreateUserComponent implements OnInit{
       return;
     }
 
-    //let postId = await this.getPostId();
+    let postId = await this.getPostId();
     
   }
 
   removeUser(event:Event, user:any) {
     event.preventDefault();
     event.stopPropagation();
-    console.log("removeUser");
-    console.log(user);
+  }
+
+  addActivity() {
+
+  }
+
+  addInvoice() {
+    
   }
 }
