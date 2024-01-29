@@ -3,22 +3,22 @@ import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PostService } from '../../post.service';
+import { SCService } from '../../sc.service';
 import { last, lastValueFrom } from 'rxjs';
 import { CryptoService } from 'src/app/core/services/crypto.service';
 import { ActionEnum, PageEnum } from 'src/app/core/models/utility.model';
 
 @Component({
-  selector: 'app-create-iaa',
+  selector: 'app-iaa-create',
   standalone: true,
   imports: [CommonModule,RouterModule,FormsModule],
-  templateUrl: './create-iaa.component.html',
-  styleUrls: ['./create-iaa.component.scss']
+  templateUrl: './iaa-create.component.html',
+  styleUrls: ['./iaa-create.component.scss']
 })
-export class CreateIAAComponent implements OnInit {
+export class IAACreateComponent implements OnInit {
   router = inject(Router);
   location = inject(Location);
-  postService = inject(PostService);
+  scService = inject(SCService);
   destroyRef = inject(DestroyRef);
   cryptoService = inject(CryptoService);
   route = inject(ActivatedRoute);
@@ -41,6 +41,9 @@ export class CreateIAAComponent implements OnInit {
   mode!:ActionEnum;
   fromPageMode!:ActionEnum;
   actionMode = ActionEnum;
+  serviceAgency:any = null;
+  requestAgency:any = null;
+  constractor:any = null;
 
   constructor() {
     this.navigation = this.router.getCurrentNavigation()
@@ -156,7 +159,7 @@ export class CreateIAAComponent implements OnInit {
       this.setByCategory()
     }
     /**
-     * Post => Category
+     * Category => Post
      * returnPage: return from page: Category
      * mode: fromPageMode
      * data: { ui, form, other} UI variables, form,
@@ -202,7 +205,7 @@ export class CreateIAAComponent implements OnInit {
   }
 
   fetchPost() {
-    this.postService.getPost(this.postId)
+    this.scService.getPost(this.postId)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res=> {
       this.post = res;
@@ -211,8 +214,8 @@ export class CreateIAAComponent implements OnInit {
 
   async fetchMaster() {
     const request = [
-      lastValueFrom(this.postService.getCategories()),
-      lastValueFrom(this.postService.getUsers()),
+      lastValueFrom(this.scService.getCategories()),
+      lastValueFrom(this.scService.getUsers()),
     ];
 
     const res = await Promise.all(request);
@@ -252,7 +255,7 @@ export class CreateIAAComponent implements OnInit {
       return false;
     }
 
-    const res = await lastValueFrom(this.postService.addPost(this.post));
+    const res = await lastValueFrom(this.scService.addPost(this.post));
     return res;
 
   }
@@ -260,7 +263,7 @@ export class CreateIAAComponent implements OnInit {
   async saveCategory() {
     if(this.post.category === -1 && this.state?.returnPageData?.category) {
       const category = this.state.returnPageData.category;
-      const res = await lastValueFrom(this.postService.addCategory(category));
+      const res = await lastValueFrom(this.scService.addCategory(category));
       this.post.category = +res.id;
     }
 
@@ -273,7 +276,7 @@ export class CreateIAAComponent implements OnInit {
       alert('Something went wrong');
       return false;
     }
-    const res = await lastValueFrom(this.postService.updatePost(this.post.id,this.post));
+    const res = await lastValueFrom(this.scService.updatePost(this.post.id,this.post));
     if(res.id) {
       return true;
     }
@@ -306,7 +309,14 @@ export class CreateIAAComponent implements OnInit {
     }
   }
 
-  addCategory(event:Event) {
+  addAgency(event:Event,type:string) {
+    event.preventDefault();
+    this.router.navigate(['/crud/categories/create'],{
+      state: this.fromPageData(ActionEnum.Create)
+    })
+  } 
+
+  addContractor(event:Event) {
     event.preventDefault();
     this.router.navigate(['/crud/categories/create'],{
       state: this.fromPageData(ActionEnum.Create)

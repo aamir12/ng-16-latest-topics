@@ -12,11 +12,13 @@ export interface Post {
 @Injectable({
   providedIn: 'root'
 })
-export class PostService {
+export class SCService {
 
   postUrl = 'http://localhost:3000/posts/';
   categoriesUrl = 'http://localhost:3000/categories/';
   usersUrl = 'http://localhost:3000/users/';
+  agenciesUrl = 'http://localhost:3000/agencies/';
+  constructorsUrl = 'http://localhost:3000/contractors/';
 
   private error$ = new Subject<Error | null>();
   errorObs = this.error$.asObservable();
@@ -64,6 +66,14 @@ export class PostService {
   }
 
   getCategories() {
+    return this.http.get<any[]>(this.categoriesUrl);
+  }
+
+  getAgencies() {
+    return this.http.get<any[]>(this.categoriesUrl);
+  }
+
+  getContractors() {
     return this.http.get<any[]>(this.categoriesUrl);
   }
 

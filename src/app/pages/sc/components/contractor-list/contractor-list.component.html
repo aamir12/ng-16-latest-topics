@@ -1,7 +1,6 @@
-
 <div class="d-flex justify-content-sm-between mb-3 align-items-start justify-content-center flex-column flex-sm-row">
-    <h2>IAA List</h2>
-    <button class="btn btn-primary btn-sm" (click)="addPost()">+ Add IAA</button>
+    <h2>Contractor List</h2>
+    <button class="btn btn-primary btn-sm" (click)="addCategory()">+ Add Contractor</button>
 </div>
 <div class="card">
     <div class="card-body">
@@ -10,19 +9,19 @@
                 <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Category</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let post of posts">
-                    <td>{{post.title}}</td>
-                    <td>{{ post.category }}</td>
+                <tr *ngFor="let cat of categories">
+                    <td>{{cat.name}}</td>
+                    <td>{{ cat.body }}</td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <button class="btn btn-outline-info" (click)="onView(post.id)" >View</button>
-                            <button class="btn btn-outline-warning" (click)="onEdit(post.id)">Edit</button>
-                            <button class="btn btn-outline-danger" (click)="onDelete(post.id)">Delete</button>
+                            <button class="btn btn-outline-info" (click)="onView(cat.id)" >View</button>
+                            <button class="btn btn-outline-warning" (click)="onEdit(cat.id)">Edit</button>
+                            <button class="btn btn-outline-danger" (click)="onDelete(cat.id)">Delete</button>
                         </div>
                         
                     </td>

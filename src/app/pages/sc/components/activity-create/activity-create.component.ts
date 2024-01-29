@@ -1,23 +1,25 @@
+
+
 import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActionEnum, PageEnum } from '../../model';
-import { PostService } from '../../post.service';
+import { SCService } from '../../sc.service';
 import { lastValueFrom } from 'rxjs';
+import { ActionEnum,PageEnum } from 'src/app/core/models/utility.model';
 
 @Component({
-  selector: 'app-create-category',
+  selector: 'app-activity-create',
   standalone: true,
   imports: [CommonModule,RouterModule,FormsModule],
-  templateUrl: './create-category.component.html',
-  styleUrls: ['./create-category.component.scss']
+  templateUrl: './activity-create.component.html',
+  styleUrls: ['./activity-create.component.scss']
 })
-export class CreateCategoryComponent implements OnInit{
+export class ActivityCreateComponent implements OnInit{
   router = inject(Router);
   location = inject(Location);
-  postService = inject(PostService);
+  scService = inject(SCService);
   destroyRef = inject(DestroyRef);
   @ViewChild('form') form!:NgForm;
 
@@ -150,7 +152,7 @@ export class CreateCategoryComponent implements OnInit{
   }
 
   fetchCategory() {
-    this.postService.getCategory(this.state.categoryId)
+    this.scService.getCategory(this.state.categoryId)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res=> {
       this.category = res;
@@ -180,12 +182,12 @@ export class CreateCategoryComponent implements OnInit{
   }
 
   async addCategory() {
-    const res = await  lastValueFrom(this.postService.addCategory(this.category))
+    const res = await  lastValueFrom(this.scService.addCategory(this.category))
     this.onReturn();
   }
 
   async editCategory() {
-    const res = await lastValueFrom(this.postService.updateCategory(this.category.id,this.category))
+    const res = await lastValueFrom(this.scService.updateCategory(this.category.id,this.category))
     this.onReturn();
   }
 

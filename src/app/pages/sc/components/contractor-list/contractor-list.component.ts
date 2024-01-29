@@ -1,20 +1,20 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { ActionEnum } from '../../../../core/models/utility.model';
-import { PostService } from '../../post.service';
+import { SCService } from '../../sc.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActionEnum } from 'src/app/core/models/utility.model';
 
 @Component({
-  selector: 'app-category-list',
+  selector: 'app-contractor-list',
   standalone: true,
   imports: [CommonModule,RouterModule],
-  templateUrl: './category-list.component.html',
-  styleUrls: ['./category-list.component.scss']
+  templateUrl: './contractor-list.component.html',
+  styleUrls: ['./contractor-list.component.scss']
 })
-export class CategoryListComponent  implements OnInit{
+export class ContractorListComponent  implements OnInit{
   router = inject(Router);
-  postService = inject(PostService);
+  scService = inject(SCService);
   destroyRef = inject(DestroyRef);
 
   categories:any = [];
@@ -23,7 +23,7 @@ export class CategoryListComponent  implements OnInit{
   }
 
   fetchCategories() {
-    this.postService.getCategories()
+    this.scService.getCategories()
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res => {
       console.log(res);
@@ -57,7 +57,7 @@ export class CategoryListComponent  implements OnInit{
       return;
     }
 
-    this.postService.deleteCategory(id)
+    this.scService.deleteCategory(id)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((res)=> {
       this.fetchCategories();

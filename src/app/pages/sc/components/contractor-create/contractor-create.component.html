@@ -1,0 +1,24 @@
+<div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title">{{ operationTitle }} Contractor</h4>
+      <form #form="ngForm" (ngSubmit)="onSubmit()" [class.disabled]="mode === actionMode.View">
+          <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" name="name" class="form-control" id="title" required [(ngModel)]="category.name">
+          </div>
+          
+          <div class="mb-3">
+              <label for="body" class="form-label">Description</label>
+              <textarea class="form-control" name="body" id="body" rows="3" required [(ngModel)]="category.body"></textarea>
+          </div>
+  
+          <div class="d-flex gap-2">
+              <button type="button" (click)="onReturn()" class="btn btn-outline-secondary">Cancel</button>
+              <button type="submit" class="btn btn-primary" *ngIf="mode !== actionMode.View && !formPage">Submit</button>
+              <button type="button" class="btn btn-warning" (click)="addToForm()" *ngIf="formPage">Add to From</button>
+  
+          </div>
+      </form>
+      
+    </div>
+  </div>

@@ -1,51 +1,59 @@
 import { Route } from "@angular/router";
 import { IAAListComponent } from "./components/iaa-list/iaa-list.component";
-import { CreateIAAComponent } from "./components/create-iaa/create-iaa.component";
+import { IAACreateComponent } from "./components/iaa-create/iaa-create.component";
+import { ActivityListComponent } from "./components/activity-list/activity-list.component";
+import { ActivityCreateComponent } from "./components/activity-create/activity-create.component";
+import { InvoiceListComponent } from "./components/invoice-list/invoice-list.component";
+import { InvoiceCreateComponent } from "./components/invoice-create/invoice-create.component";
+import { AgencyListComponent } from "./components/agency-list/agency-list.component";
+import { AgencyCreateComponent } from "./components/agency-create/agency-create.component";
+import { ContractorListComponent } from "./components/contractor-list/contractor-list.component";
+import { ContractorCreateComponent } from "./components/contractor-create/contractor-create.component";
 
 export const SC_ROUTES: Route[] = [
     {
-        path:'iaa',
+        path:'iaas',
         component:IAAListComponent
     },
     {
-        path:'iaa/:encId', //create
-        component:CreateIAAComponent
+        path:'iaas/:encId', //create
+        component:IAACreateComponent
     },
     {
-        path:'activity',
-        component:CreateIAAComponent
+        path:'activities',
+        component:ActivityListComponent
     },
     {
-        path:'activity/:encId',
-        component:CreateIAAComponent
+        path:'activities/:encId',
+        component:ActivityCreateComponent
     },
     {
-        path:'invoice',
-        component:CreateIAAComponent
+        path:'invoices',
+        component:InvoiceListComponent
     },
     {
-        path:'invoice/:encId',
-        component:CreateIAAComponent
+        path:'invoices/:encId',
+        component:InvoiceCreateComponent
     },
     {
         path:'agencies',
-        component:CreateIAAComponent
+        component:AgencyListComponent
     },
     {
         path:'agencies/:encId',
-        component:CreateIAAComponent
+        component:AgencyCreateComponent
     },
     {
-        path:'contractor',
-        component:CreateIAAComponent
+        path:'contractors',
+        component:ContractorListComponent
     },
     {
-        path:'contractor/:encId',
-        component:CreateIAAComponent
+        path:'contractors/:encId',
+        component:ContractorCreateComponent
     },
     {
         path:'',
-        redirectTo:'iaa',
+        redirectTo:'iaas',
         pathMatch:'full'
     }    
 ]
