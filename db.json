@@ -71,13 +71,15 @@
       "id": 7
     }
   ],
-  "iaa": [
+  "iaas": [
     {
+      "id":1,
       "title": "IAA",
-      "contracNo": "Test",
+      "contracNo": "CONTRACT100",
       "serviceAgency": 1,
-      "requestAgency": 1,
-      "contractor": 1
+      "requestAgency": 2,
+      "contractor": 1,
+      "body":"Test"
     }
   ],
   "activities": [
@@ -90,15 +92,20 @@
   "agencies": [
     {
       "id": 1,
-      "agencyName": "Kids Care",
-      "contracNo": "['CONTRACT100','CONTRACT101']"
+      "name": "Kids Care",
+      "contracNo": "['CONTRACT100']"
+    },
+    {
+      "id": 2,
+      "name": "Fit N Fine",
+      "contracNo": "['CONTRACT100']"
     }
   ],
   "contractors": [
     {
       "id": 1,
-      "contractorName": "Amazon Provider",
-      "contracNo": "['CONTRACT100','CONTRACT101']"
+      "name": "Amazon Provider",
+      "contracNo": "['CONTRACT100']"
     }
   ],
   "invoices": [

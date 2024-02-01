@@ -5,7 +5,8 @@ import { SCService } from '../../sc.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { combineLatest, forkJoin, lastValueFrom } from 'rxjs';
 import { CryptoService } from 'src/app/core/services/crypto.service';
-import { ActionEnum } from 'src/app/core/models/utility.model';
+import { ActionEnum, SessionKey } from 'src/app/core/models/utility.model';
+import { removeSession } from 'src/app/core/services/utility.fn';
 
 @Component({
   selector: 'app-iaa-list',
@@ -20,22 +21,26 @@ export class IAAListComponent implements OnInit{
   destroyRef = inject(DestroyRef);
   cryptoService = inject(CryptoService)
 
-  posts:any = [];
+  iaas:any = [];
   ngOnInit(): void {
-    this.fetchPosts();
+    removeSession(SessionKey.IAA);
+    this.fetchIaas();
   }
 
-  fetchPosts() {
+  fetchIaas() {
     combineLatest({
-      posts:this.scService.getPosts(),
-      categories: this.scService.getCategories()
+      iaas:this.scService.getIaas(),
+      agencies: this.scService.getAgencies(),
+      contractors: this.scService.getContractors()
     })
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res => {
-      console.log("fetchPostResponse")
+      console.log("fetchIaas")
       console.log(res);
-      this.posts = res.posts.map(post => {
-        post.category =  res.categories.find(cat => cat.id === +post.category)?.name || ''
+      this.iaas = res.iaas.map(post => {
+        post.requestAgency =  res.agencies.find(agency => agency.id === +post.requestAgency)?.name || ''
+        post.serviceAgency =  res.agencies.find(agency => agency.id === +post.serviceAgency)?.name || ''
+        post.contractor =  res.contractors.find(contractor => contractor.id === +post.contractor)?.name || ''
         return post;
       })
     })
@@ -50,7 +55,7 @@ export class IAAListComponent implements OnInit{
 
   onView(id:any) {
     const encID = this.cryptoService.encrypt(JSON.stringify({
-      postId: id,
+      iaaId: id,
       mode: ActionEnum.View
     }));
     this.router.navigate(['/sc','iaas',encID]);
@@ -62,7 +67,7 @@ export class IAAListComponent implements OnInit{
 
   onEdit(id:any) {
     const encID = this.cryptoService.encrypt(JSON.stringify({
-      postId: id,
+      iaaId: id,
       mode: ActionEnum.Edit
     }));
     this.router.navigate(['/sc','iaas',encID]);
@@ -91,7 +96,7 @@ export class IAAListComponent implements OnInit{
 
     request.push(lastValueFrom(this.scService.deletePost(id)));
     await Promise.all(request);
-    this.fetchPosts();
+    this.fetchIaas();
   
   }
 }

@@ -117,6 +117,8 @@ export class EditEableMatTableComponent{
       const cols = [...new Set(['Actions',...this.displayedColumns])];
       this.displayedColumns = cols;
     }
+
+    this.updateTable();
   }
 
   addRow() {

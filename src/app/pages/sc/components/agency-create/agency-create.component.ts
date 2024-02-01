@@ -1,11 +1,13 @@
 import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SCService } from '../../sc.service';
 import { lastValueFrom } from 'rxjs';
-import { ActionEnum,PageEnum } from 'src/app/core/models/utility.model';
+import { ActionEnum,PageEnum, SessionKey } from 'src/app/core/models/utility.model';
+import { CryptoService } from 'src/app/core/services/crypto.service';
+import { getSession, setSession } from 'src/app/core/services/utility.fn';
 
 @Component({
   selector: 'app-agency-create',
@@ -19,6 +21,15 @@ export class AgencyCreateComponent implements OnInit{
   location = inject(Location);
   scService = inject(SCService);
   destroyRef = inject(DestroyRef);
+  route = inject(ActivatedRoute);
+
+  agencyId:any = null;
+  agency:any = {
+    id:null,
+    name:''
+  }
+  
+  cryptoService = inject(CryptoService);
   @ViewChild('form') form!:NgForm;
 
   navigation!:any;
@@ -31,32 +42,57 @@ export class AgencyCreateComponent implements OnInit{
 
   mode!:ActionEnum;
   fromPageMode!:ActionEnum;
-  formPage!:string
+  fromPage!:string
   actionMode = ActionEnum;
   
+  fromPagedata:any = null;
   constructor() {
     this.navigation = this.router.getCurrentNavigation()
     this.state = this.location.getState();
   }
 
+  decodeParams() {
+    const param = this.route.snapshot.params['encId'];
+    if(param === 'create') {
+      this.mode = ActionEnum.Create
+    }else {
+      const decodedData:any = this.cryptoService.decrypt(param);
+      if(!decodedData) {
+        this.router.navigate(['./sc','agencies']);
+        return false;
+      }
+      const data = JSON.parse(decodedData);
+      if(data['mode'] === ActionEnum.Edit) {
+        this.mode = ActionEnum.Edit;
+        this.agencyId = data['agencyId'];
+      }else if(data['mode'] === ActionEnum.View) {
+        this.mode = ActionEnum.View;
+        this.agencyId = data['agencyId'];
+      }
 
-  ngOnInit(): void {
-    this.checkPermission();
-    this.fetchMaster();
+    }
+
+    return true;
+    
+  }
+
+  async ngOnInit() {
+    if(!this.decodeParams()) return;
+    await this.fetchMaster();
     this.setup()
   }
 
   checkPermission() {
-    console.log("State");
-    console.log(this.state);
+    // console.log("State");
+    // console.log(this.state);
 
-    console.log("Navigation");
-    console.log(this.navigation);
+    // console.log("Navigation");
+    // console.log(this.navigation);
 
-    if(!this.state.mode) {
-      this.router.navigate(['./crud/categories']);
-      return;
-    }
+    // if(!this.state.mode) {
+    //   this.router.navigate(['./crud/categories']);
+    //   return;
+    // }
 
     // if(!this.navigation?.mode) {
     // // this.router.navigate(['./crud'])
@@ -70,14 +106,15 @@ export class AgencyCreateComponent implements OnInit{
     
   }
 
+  getSessionValue() {
+    this.fromPagedata = getSession(SessionKey.IAA) || getSession(SessionKey.PROJECT) || {};
+  }
+
   setup() {
-    //const {mode,fromPage,returnPage} = this.navigation.extras.state;
-    const {mode,fromPage,returnPage} = this.state;
+    this.getSessionValue();
+    const {mode,fromPage,fromPageMode ,toPagemode} = this.fromPagedata;
     if(fromPage) {
-      this.fromPageSetup();
-    }else 
-    if(returnPage) {
-      this.returnPageSetup();
+      this.fromPageSetup(fromPage,fromPageMode,toPagemode);
     }else {
       this.mode = mode;
       this.generalSetup();
@@ -97,7 +134,7 @@ export class AgencyCreateComponent implements OnInit{
     }
   }
 
-  fromPageSetup() {
+  fromPageSetup(fromPage:string,fromPageMode:ActionEnum,toPagemode:ActionEnum) {
     console.log("fromPageSetup");
     /**
      * eg: Post => Category
@@ -110,14 +147,13 @@ export class AgencyCreateComponent implements OnInit{
      *   form
      * }); UI variables, form data,  
      */
-    this.fromPageMode = this.state.fromPageMode; 
-    this.formPage = this.state.fromPage;
-    this.mode = this.state.mode;
-    if(this.state.fromPage === PageEnum.Post) {
-      //setUp According Post page; eg PostPageSetUp()
-    }
+    this.fromPageMode = fromPageMode; 
+    this.fromPage = fromPage;
+    this.mode = toPagemode; 
     this.generalSetup();
   }
+
+  
 
   returnPageSetup() {
     console.log("returnPageSetup");
@@ -139,21 +175,21 @@ export class AgencyCreateComponent implements OnInit{
     this.operationTitle = ActionEnum.Edit;
     console.log("editSetup")
     this.mode = ActionEnum.Edit;
-    this.fetchCategory();
+    this.fetchAgency();
   }
 
   veiwSetup() {
     this.operationTitle = ActionEnum.View;
     console.log("viewsetUp");
     this.mode = ActionEnum.View;
-    this.fetchCategory();
+    this.fetchAgency();
   }
 
-  fetchCategory() {
-    this.scService.getCategory(this.state.categoryId)
+  fetchAgency() {
+    this.scService.getCategory(this.agencyId)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res=> {
-      this.category = res;
+      this.agency = res;
     })
   }
 
@@ -191,9 +227,9 @@ export class AgencyCreateComponent implements OnInit{
 
   getReturnPageState(otherData:any={}) {
     return {
-      returnPage:PageEnum.Category,
-      mode: this.state.fromPageMode,
-      data: this.state.data,
+      returnPage:PageEnum.Agency,
+      mode: this.fromPageMode,
+      data: this.fromPagedata,
       ...otherData
     }
   }
@@ -203,37 +239,73 @@ export class AgencyCreateComponent implements OnInit{
       return;
     }
 
-    const returnData = {
-      returnPageData: {
-        category: this.category
-      }
-    };
-
-    if(this.state?.fromPage === PageEnum.Post) {
-      this.returnToPreviousPage('/crud',returnData);
-      return;
-    }
+    this.setUpReturn(false)
 
   }
 
 
-  returnToPreviousPage(prePage:string,retunPageData:any = {}) {
-    const returnUrl = [prePage];
-    this.state.fromPageMode === ActionEnum.Create 
-    ? returnUrl.push('create')
-    : returnUrl.push('edit');
 
-    this.router.navigate(returnUrl,{
-        state: this.getReturnPageState(retunPageData)
-    });
+  returnBack() {
+    const returnUrl = [];
+    if(this.fromPage === PageEnum.IAA) {
+      returnUrl.push('/sc/iaas');
+    }
+
+    if(this.fromPage === PageEnum.Project) {
+      returnUrl.push('/sc/projects');
+    }
+
+    if(this.fromPageMode === ActionEnum.Create) {
+      returnUrl.push('create')
+    }
+  
+    if(this.fromPageMode !== ActionEnum.Create) {
+      const param:any = {
+        mode: this.fromPageMode,
+        iaaId: this.fromPagedata?.data?.formId
+      }
+
+      const encId = JSON.stringify(this.cryptoService.encrypt(param));
+      returnUrl.push(encId);
+      this.router.navigate(returnUrl);
+      return;
+    }
+
+    this.router.navigate(['/sc/agencies'])
+  }
+
+  //if isCanceled is true means we click cancel button
+  setUpReturn(isCanceled:boolean) {
+    if(this.fromPage === PageEnum.IAA) {
+      let agencyData = {}
+
+      // isCanceled is false means we are comming from add to form button
+      if(!isCanceled) {
+        agencyData = {
+          agency : this.agency,
+          agencyType : this.fromPagedata?.data?.agency?.agencyType
+        }
+      }
+      this.iaaReturnData(agencyData);
+    }
+  }
+
+
+  iaaReturnData(agencyData:any = {}) {
+    const returnPageData = {
+      returnPage: PageEnum.Agency,
+      returnData: {
+        iaaPage: this.fromPagedata.data,
+        agencyData
+      }
+    }
+    const encData = this.cryptoService.encrypt(JSON.stringify(returnPageData));
+    setSession(SessionKey.IAA,encData);
   }
 
   onReturn() {
-    if(this.state?.fromPage === PageEnum.Post) {
-      this.returnToPreviousPage('/crud');
-      return;
-    }
-    this.router.navigate(['/crud/categories'])
+      this.setUpReturn(true);
+      this.returnBack();
   }
 
   

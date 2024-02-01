@@ -2,8 +2,8 @@
 export type NonArrayObject = { [key:string]:any } & { length?: never };
 
 export enum SessionKey {
-    POST = 'POST',
-    CATEGORY = 'CATEGORY'
+    IAA = 'IAA',
+    PROJECT = 'PROJECT'
 }
 
 export enum ActionEnum  {
@@ -16,5 +16,8 @@ export enum ActionEnum  {
 
 export enum PageEnum  {
     Post = 'Post',
-    Category = 'Category'
+    Category = 'Category',
+    IAA = 'IAA',
+    Project = 'Project',
+    Agency = 'Agency'
 }

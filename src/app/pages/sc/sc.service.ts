@@ -14,7 +14,7 @@ export interface Post {
 })
 export class SCService {
 
-  postUrl = 'http://localhost:3000/posts/';
+  iaasUrl = 'http://localhost:3000/iaas/';
   categoriesUrl = 'http://localhost:3000/categories/';
   usersUrl = 'http://localhost:3000/users/';
   agenciesUrl = 'http://localhost:3000/agencies/';
@@ -27,8 +27,8 @@ export class SCService {
 
   constructor(private http:HttpClient) { }
   
-  allPosts() {
-    return this.http.get<any[]>(this.postUrl).pipe(
+  allIaas() {
+    return this.http.get<any[]>(this.iaasUrl).pipe(
       tap(() => {
         this.error$.next(null);
       }),
@@ -45,35 +45,42 @@ export class SCService {
     this.retry$.next();
   }
 
-  getPosts() {
-    return this.http.get<any[]>(this.postUrl);
+  getIaas() {
+    return this.http.get<any[]>(this.iaasUrl);
+  }
+
+  getIaa(id:any) {
+    return this.http.get<any[]>(this.iaasUrl+id);
   }
 
   getPost(id:any) {
-    return this.http.get<any[]>(this.postUrl+id);
+    return this.http.get<any[]>(this.iaasUrl+id);
   }
 
   addPost(data:any) {
-    return this.http.post<any>(this.postUrl,data)
+    return this.http.post<any>(this.iaasUrl,data)
   }
 
   deletePost(id:any) {
-    return this.http.delete<any>(this.postUrl+id)
+    return this.http.delete<any>(this.iaasUrl+id)
   }
 
   updatePost(id:any,data:any) {
-    return this.http.patch<any>(this.postUrl+id,data)
+    return this.http.patch<any>(this.iaasUrl+id,data)
   }
+  ////////////
 
-  getCategories() {
-    return this.http.get<any[]>(this.categoriesUrl);
-  }
 
   getAgencies() {
-    return this.http.get<any[]>(this.categoriesUrl);
+    return this.http.get<any[]>(this.agenciesUrl);
   }
 
   getContractors() {
+    return this.http.get<any[]>(this.constructorsUrl);
+  }
+
+  ///////////categories//////
+  getCategories() {
     return this.http.get<any[]>(this.categoriesUrl);
   }
 
@@ -92,6 +99,8 @@ export class SCService {
   updateCategory(id:any,data:any) {
     return this.http.patch<any>(this.categoriesUrl+id,data)
   }
+
+  ///////end categories///////
 
   getUsers() {
     return this.http.get<any[]>(this.usersUrl);

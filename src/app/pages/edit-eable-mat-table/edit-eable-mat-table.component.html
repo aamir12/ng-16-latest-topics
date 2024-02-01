@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12">
                <div class="d-flex my-3 gap-2">
-                    <button type="button" class="btn btn-primary btn-sm" (click)="toggleMode()"> {{isEditMode ?'Edit':'View'}} Mode </button>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="toggleMode()"> {{!isEditMode ?'Edit':'View'}} Mode </button>
                     <div *ngIf="isEditMode">
                         <button type="button" [disabled]="!showTable"  class="btn btn-primary btn-sm" (click)="addRow()"> Add </button>
                     <input type="number" name="numberOfRow" [(ngModel)]="numberOfRow" >

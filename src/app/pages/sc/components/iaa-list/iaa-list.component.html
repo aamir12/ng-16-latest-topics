@@ -10,19 +10,25 @@
                 <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Category</th>
+                    <th>IAA No.</th>
+                    <th>Service Agency</th>
+                    <th>Request Agency</th>
+                    <th>Contractor</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let post of posts">
-                    <td>{{post.title}}</td>
-                    <td>{{ post.category }}</td>
+                <tr *ngFor="let iaa of iaas">
+                    <td>{{iaa.title}}</td>
+                    <td>{{ iaa.contracNo }}</td>
+                    <td>{{ iaa.serviceAgency }}</td>
+                    <td>{{ iaa.requestAgency }}</td>
+                    <td>{{ iaa.contractor }}</td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <button class="btn btn-outline-info" (click)="onView(post.id)" >View</button>
-                            <button class="btn btn-outline-warning" (click)="onEdit(post.id)">Edit</button>
-                            <button class="btn btn-outline-danger" (click)="onDelete(post.id)">Delete</button>
+                            <button class="btn btn-outline-info" (click)="onView(iaa.id)" >View</button>
+                            <button class="btn btn-outline-warning" (click)="onEdit(iaa.id)">Edit</button>
+                            <button class="btn btn-outline-danger" (click)="onDelete(iaa.id)">Delete</button>
                         </div>
                         
                     </td>

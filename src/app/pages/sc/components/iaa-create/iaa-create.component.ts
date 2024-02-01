@@ -6,7 +6,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SCService } from '../../sc.service';
 import { last, lastValueFrom } from 'rxjs';
 import { CryptoService } from 'src/app/core/services/crypto.service';
-import { ActionEnum, PageEnum } from 'src/app/core/models/utility.model';
+import { ActionEnum, PageEnum, SessionKey } from 'src/app/core/models/utility.model';
+import { setSession } from 'src/app/core/services/utility.fn';
 
 @Component({
   selector: 'app-iaa-create',
@@ -28,23 +29,27 @@ export class IAACreateComponent implements OnInit {
   navigation!:any;
   state!:any;
   operationTitle = '';
-  postId!:number;
-  post:any = {
+  iaaId!:number;
+  iaa:any = {
     id:null,
     title:'',
-    category:'',
+    serviceAgency:'',
+    requestAgency:'',
+    contractor:'',
     body:''
   }
 
-  categories:any[] = [];
-  userList:any[] = [];
+  agencyList:any[] = [];
+  contractorList:any[] = [];
   mode!:ActionEnum;
   fromPageMode!:ActionEnum;
   actionMode = ActionEnum;
+
   serviceAgency:any = null;
   requestAgency:any = null;
   constractor:any = null;
 
+  fromPage:any = null;
   constructor() {
     this.navigation = this.router.getCurrentNavigation()
     this.state = this.location.getState();
@@ -64,16 +69,16 @@ export class IAACreateComponent implements OnInit {
     }else {
       const decodedData:any = this.cryptoService.decrypt(param);
       if(!decodedData) {
-        this.router.navigate(['./crud']);
+        this.router.navigate(['./sc','iaas']);
         return false;
       }
       const data = JSON.parse(decodedData);
       if(data['mode'] === ActionEnum.Edit) {
         this.mode = ActionEnum.Edit;
-        this.postId = data['postId'];
+        this.iaaId = data['iaaId'];
       }else if(data['mode'] === ActionEnum.View) {
         this.mode = ActionEnum.View;
-        this.postId = data['postId'];
+        this.iaaId = data['iaaId'];
       }
 
     }
@@ -169,7 +174,7 @@ export class IAACreateComponent implements OnInit {
 
   setUpLocalFromReturnPage() {
     const data = JSON.parse(this.state.data);
-    this.post = data.form;
+    this.iaa = data.form;
     this.operationTitle = data.ui.operationTitle;
     this.mode = this.state.mode;
   }
@@ -177,12 +182,12 @@ export class IAACreateComponent implements OnInit {
   setByCategory() {
     if(this.state?.returnPageData?.category) {
       const category = this.state.returnPageData.category;
-      this.categories.push({
+      this.agencyList.push({
         id: -1,
         ...category
       });
 
-      this.post.category = -1;
+      this.iaa.serviceAgency = -1;
     }
   }
 
@@ -195,40 +200,42 @@ export class IAACreateComponent implements OnInit {
   editSetup() {
     this.operationTitle = ActionEnum.Edit;
     this.mode = ActionEnum.Edit;
-    this.fetchPost();
+    this.fetchIaa();
   }
 
   veiwSetup() {
     this.operationTitle = ActionEnum.View;
     this.mode = ActionEnum.View;
-    this.fetchPost();
+    this.fetchIaa();
   }
 
-  fetchPost() {
-    this.scService.getPost(this.postId)
+  fetchIaa() {
+    this.scService.getIaa(this.iaaId)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(res=> {
-      this.post = res;
+      this.iaa = res;
     })
   }
 
   async fetchMaster() {
     const request = [
-      lastValueFrom(this.scService.getCategories()),
-      lastValueFrom(this.scService.getUsers()),
+      lastValueFrom(this.scService.getAgencies()),
+      lastValueFrom(this.scService.getContractors()),
     ];
 
     const res = await Promise.all(request);
-    this.categories = res[0];
-    const postId = this.postId;
-    res[1].forEach(user => {
-      const posts = user.posts  ? JSON.parse(user.posts) : [];
-      if(postId && posts.includes(postId)) {
-        this.userList.push(user);
-      }
-    })
+    this.agencyList = res[0];
+    this.contractorList = res[1];
 
-    console.log("fetchMaster")
+    // const postId = this.postId;
+    // res[1].forEach(user => {
+    //   const posts = user.posts  ? JSON.parse(user.posts) : [];
+    //   if(postId && posts.includes(postId)) {
+    //     this.userList.push(user);
+    //   }
+    // })
+
+    // console.log("fetchMaster")
   }
 
 
@@ -250,77 +257,81 @@ export class IAACreateComponent implements OnInit {
   
 
   async addPost() {
-    if(!(await this.saveCategory())) {
+    if(!(await this.saveAgency())) {
       alert('Something went wrong');
       return false;
     }
 
-    const res = await lastValueFrom(this.scService.addPost(this.post));
+    const res = await lastValueFrom(this.scService.addPost(this.iaa));
     return res;
 
   }
 
-  async saveCategory() {
-    if(this.post.category === -1 && this.state?.returnPageData?.category) {
+  async saveAgency() {
+    if(this.iaa.serviceAgency === -1 && this.state?.returnPageData?.category) {
       const category = this.state.returnPageData.category;
       const res = await lastValueFrom(this.scService.addCategory(category));
-      this.post.category = +res.id;
+      this.iaa.serviceAgency = +res.id;
     }
 
-    this.post.category = +this.post.category;
+    this.iaa.category = +this.iaa.category;
     return true;
   }
 
   async editPost() {
-    if(!(await this.saveCategory())) {
+    if(!(await this.saveAgency())) {
       alert('Something went wrong');
       return false;
     }
-    const res = await lastValueFrom(this.scService.updatePost(this.post.id,this.post));
+    const res = await lastValueFrom(this.scService.updatePost(this.iaa.id,this.iaa));
     if(res.id) {
       return true;
     }
     return false;
   }
 
-  onReturn() {
-    if(this.state?.fromPage === 'user') {
-      this.router.navigate(['/crud/user']);
-      return;
-    }
-    
-    this.router.navigate(['/crud'])
+  onReturn() {  
+    this.router.navigate(['/sc','iaas'])
   }
 
-  fromPageData(toPageMode:ActionEnum,other:any={}) {
+  createFromPageData(toPageMode:ActionEnum,type:string='',other:any={}) {
     return {
-      fromPage: PageEnum.Post,
-      fromPageMode: this.mode,
-      mode: toPageMode,
-      data: JSON.stringify({
-        form: this.post,
+      fromPage: PageEnum.Post, //return page
+      fromPageMode: this.mode, // return mode
+      toPagemode: toPageMode, // landing page mode
+      data: {
+        form: this.iaa,
+        formId: this.iaa.id,
+        agency: {
+          serviceAgency: this.serviceAgency,
+          requestAgency: this.requestAgency,
+          agencyType: type
+        },
+        contractor: this.constractor,
         ui: {
           operationTitle: this.operationTitle
         },
         other: {
           ...other
         }
-      })
+      }
     }
   }
 
   addAgency(event:Event,type:string) {
     event.preventDefault();
-    this.router.navigate(['/crud/categories/create'],{
-      state: this.fromPageData(ActionEnum.Create)
-    })
+    const data = JSON.stringify(this.createFromPageData(ActionEnum.Create,type));
+    const encryptData = this.cryptoService.encrypt(data);
+    setSession(SessionKey.IAA,encryptData);
+    this.router.navigate(['/sc/agencies/create'])
   } 
 
   addContractor(event:Event) {
     event.preventDefault();
-    this.router.navigate(['/crud/categories/create'],{
-      state: this.fromPageData(ActionEnum.Create)
-    })
+    const data = JSON.stringify(this.createFromPageData(ActionEnum.Create));
+    const encryptData = this.cryptoService.encrypt(data);
+    setSession(SessionKey.IAA,encryptData);
+    this.router.navigate(['/sc/contractors/create'])
   } 
 
   openUser(event:Event,user:any) {
@@ -333,7 +344,7 @@ export class IAACreateComponent implements OnInit {
       return post.id;
     }else 
     if(this.mode === ActionEnum.Edit) {
-      return this.post.id;
+      return this.iaa.id;
     }
   }
 

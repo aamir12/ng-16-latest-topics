@@ -16,7 +16,7 @@ export class NetworkInterceptor implements HttpInterceptor {
     this.loaderService.show();
     this.totalRequests++;
     return next.handle(request).pipe(
-      delay(1000),
+      // delay(1000),
       finalize(() => {
         this.completedRequests++;
         if (this.completedRequests === this.totalRequests) {
