@@ -107,6 +107,7 @@ export class EditEableMatTableComponent{
       this.dataSource = new MatTableDataSource(this.matTableList);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      //this.dataSource.sortData = this.sortFn;
   }
 
   toggleMode() {
@@ -192,6 +193,36 @@ export class EditEableMatTableComponent{
     if(input?.errors?.pattern) {
       alert(message)
     }
+  }
+
+  // sortFn(items: any[], sort: MatSort) {
+  //   if (!sort.active || sort.direction === '') {
+  //     return items;
+  //   }
+
+  //   console.log(items);
+  //   return items.sort((a, b) => {
+  //     let comparatorResult = 0;
+  //     switch (sort.active) {
+  //       case 'title':
+  //         comparatorResult = a.title.localeCompare(b.title);
+  //         break;
+  //       case 'description':
+  //         comparatorResult = a.description.localeCompare(b.description);
+  //         break;
+  //       case 'totalValue':
+  //         comparatorResult =   +a.totalValue - +b.totalValue;
+  //         break;
+  //       default:
+  //         comparatorResult = a.title.localeCompare(b.title);
+  //         break;
+  //     }
+  //     return comparatorResult * (sort.direction == 'asc' ? 1 : -1);
+  //   });
+  // };
+
+  stopPropagation(event: Event): void {
+    event.stopPropagation();
   }
 
   // applyFilter(event: Event) {

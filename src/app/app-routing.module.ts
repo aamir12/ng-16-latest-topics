@@ -60,6 +60,10 @@ const routes: Routes = [
         (mod) => mod.SC_ROUTES
       ),
   },
+  {
+    path: 'dynamic-form',
+    loadComponent: () => import('./pages/dynamic-form/dynamic-form.component').then(mod => mod.DynamicFormComponent)
+  },
   
 ];
 

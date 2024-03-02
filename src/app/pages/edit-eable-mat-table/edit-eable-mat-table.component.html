@@ -18,7 +18,7 @@
               <div class="mat-table-container inline-table" *ngIf="showTable">
                 <table mat-table [dataSource]="dataSource" matSort>
                     <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema; index as colIndex">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="col.key === 'Actions' || isEditMode">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="col.key === 'Actions'"> <!--  || isEditMode -->
                             <span *ngIf="col.required" class="text-danger fw-bold pe-1">*</span> {{ col.label }} 
                         </th>
                         <td mat-cell *matCellDef="let row; let rowIndex = index">
@@ -44,7 +44,7 @@
                                     }" -->
                                     <input *ngIf="col.type === 'alphaNumeric'" type="text"  pattern="[a-zA-Z0-9]+" [name]="'editingField_' + rowIndex + '_' + colIndex" [required]="!!col.required"  [(ngModel)]="row[col.key]" [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" #input1="ngModel"  (blur)="showError(input1,'It should be alphanumeric')" [ngClass]="{
                                         'border-danger':input1.invalid && (isSubmit || input1.touched)
-                                    }" />
+                                    }"  />
 
                                     <input [ngClass]="{
                                         'border-danger':input2.invalid && isSubmit
@@ -52,7 +52,7 @@
                                         'border-danger':input2.invalid && (isSubmit || input2.touched)
                                     }" />
 
-                                    <input  [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" *ngIf="col.type === 'number'" type="text"  [name]="'editingField_' + rowIndex + '_' + colIndex" [(ngModel)]="row[col.key]"  currencyMask
+                                    <input [appAutoFocus]="rowIndex === 0 && colIndex === 1" [focusDelay]="500" *ngIf="col.type === 'number'" type="text"  [name]="'editingField_' + rowIndex + '_' + colIndex" [(ngModel)]="row[col.key]"  currencyMask
                                     [options]="{ align: 'center', allowNegative: false }" [min]="0" [required]="!!col.required" #input3="ngModel" [ngClass]="{
                                         'border-danger':input3.invalid && (isSubmit || input3.touched)
                                     }"/>

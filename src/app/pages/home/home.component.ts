@@ -19,7 +19,9 @@ import { MatDialogConfig } from '@angular/material/dialog';
 export class HomeComponent {
   lazyDialogService = inject(LazyDialogService);
   dialogService = inject(DialogService);
-
+  data = {
+    name:'aamir'
+  }
   async yesNoDialog() {
    const result = await lastValueFrom(this.dialogService.confirmDialog({
       title: 'Title',
@@ -55,5 +57,10 @@ export class HomeComponent {
       cancelText: 'Not sure!',
     }));
     console.log(result)
+  }
+
+  async openDynamicComponent() {
+    const data = await this.lazyDialogService.openDialog('lazy-dialog',this.data);
+    console.log(data);
   }
 }
